@@ -6,8 +6,8 @@ Tecnológico de Costa Rica.
 
 ## Integrantes Grupo 6 🚀
 
-* Diego Gerardo Mendez Valverde
-* Oscar Cortez Martinez
+* Diego Gerardo Méndez Valverde
+* Óscar Cortés Cordero
 
 ### Introducción 📋
 
