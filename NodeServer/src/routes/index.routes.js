@@ -3,9 +3,9 @@ const router = Router();
 
 router.get('/', (req, res) =>
 {
-    res.send('Bienvenido a Amarson.' +
+    res.send('Bienvenido a la busqueda de restaurantes.' +
         '\n' +
-        'Esperamos que encuentres el producto que buscas')
+        ' Esperamos que encuentres el indicado.')
 }
 );
 export default router;

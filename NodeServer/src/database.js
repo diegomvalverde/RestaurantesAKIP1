@@ -4,7 +4,7 @@ export async function connect()
 {
     try
     {
-        const client = await MongoClient.connect('mongodb://localhost:27019',
+        const client = await MongoClient.connect('mongodb://localhost:27017',
         {
             useNewUrlParser: true,
             connectTimeoutMS:1000,
@@ -14,7 +14,7 @@ export async function connect()
         });
         // console.log('Se ha conectado a la base');
 
-        return client.db("amarson");
+        return client.db("restaurants");
     }
     catch(e)
     {
