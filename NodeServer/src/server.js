@@ -1,7 +1,10 @@
 
 import express from 'express';
-
+const path = require('path');
 const app = express();
+
+// Static files
+app.use(express.static(path.join(__dirname, '/uploads/')));
 
 // Config
 app.set('port', process.env.PORT || 3000);

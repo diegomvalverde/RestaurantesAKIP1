@@ -6,6 +6,9 @@ const uuid = require('uuid');
 // Para subir imagenes al server
 const multer = require('multer');
 
+
+
+
 // Propiedades para guardar la imagen
 const storage = multer.diskStorage(
   {
