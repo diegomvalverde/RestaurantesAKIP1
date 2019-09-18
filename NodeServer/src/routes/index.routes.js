@@ -8,4 +8,5 @@ router.get('/', (req, res) =>
         ' Esperamos que encuentres el indicado.')
 }
 );
+
 export default router;

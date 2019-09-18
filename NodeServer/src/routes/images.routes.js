@@ -1,7 +1,17 @@
 import {Router} from 'express';
 const router = Router();
+const path = require('path');
+const uuid = require('uuid');
 
-// bluebird.promisifyAll(redis);
+// Para subir imagenes al server
+const multer = require('multer');
+
+// Propiedades para guardar la imagen
+const storage = multer.diskStorage(
+  {
+    filename: (req, file, cb) => cb(null, uuid() + path.extname(file.originalname).toLocaleLowerCase()),
+    destination: 'src/uploads'
+  });
 
 //Database connection
 import {connect} from "../database";
@@ -9,6 +19,26 @@ import {connect} from "../database";
 // import {ObjectID} from "mongodb";
 
 const {ObjectID} = require("mongodb");
+
+//Middlewares
+
+router.use(multer
+(
+  {
+    storage: storage,
+    dest: 'src/uploads',
+    limits: {fileSize: 500000},
+    fileFilter: (req, file, cb) =>
+    {
+      const filetypes = /jpeg|jpg|png|gif/;
+      const mimetype = filetypes.test(file.mimetype);
+      const extname = filetypes.test(path.extname(file.originalname));
+      if(mimetype && extname){
+        return cb(null, true);
+      }
+      cb("Error, el archivo debe ser una imagen valida")
+    }
+  }).single('file'));
 
 
 // router.get('/', async (req, res) => {});
@@ -56,27 +86,43 @@ const {ObjectID} = require("mongodb");
 //
 // );
 
-// Consulta un restaurante por nombre
-router.get('/:nombreRestaurante', async (req, res) => {
-    const {nombreRestaurante} = req.params;
+// Consulta una imagen de un restaurante con el id de mongo
+router.get('/:idRestaurante', async (req, res) => {
+    const {idRestaurante} = req.params;
 
     const db = await connect();
-    const result = await db.collection('restaurants').findOne({name: nombreRestaurante});
+    const result = await db.collection('images').find({idRestaurant: ObjectID(idRestaurante)}).toArray();
     // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
     // console.log(jsonResult);
-    res.json(result);
+
+    const image = path.join(__dirname, '/../uploads/' +result[1].imageDir);
+
+    console.log(result.length);
+
+    for (var
+      i = 0; i < result.length; i++) {
+      // res.push(result[i].imageDir)
+    }
+    res.sendFile(image);
 
 }
 );
 
-// Consulta todos los restaurantes
-router.get('/', async (req, res) => {
+// Subir una imagen al server con id de mongo del restaurante
+router.post('/:idRestaurant', async (req, res) => {
+  const db = await connect();
+  const {idRestaurant} = req.params;
+  const image = req.file;
 
-    const db = await connect();
-    const result = await db.collection('restaurants').find({}).toArray();
-    // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
-    // console.log(jsonResult);
-    res.json(result);
+  const img =
+  {
+      idRestaurant: ObjectID(idRestaurant),
+      imageDir: image.filename
+  };
+
+  const result = await db.collection('images').insertOne(img);
+  console.log(req.file);
+  res.send("Imagen agregada correctamente");
 
 }
 );
