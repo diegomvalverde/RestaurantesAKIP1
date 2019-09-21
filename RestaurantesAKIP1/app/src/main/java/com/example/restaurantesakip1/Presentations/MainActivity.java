@@ -68,7 +68,10 @@ public class MainActivity extends AppCompatActivity {
                         // App code
                     }
                 });
+    }
 
+    public void applicationSigIn(View v){
+        acceptSingIn();
     }
 
 
