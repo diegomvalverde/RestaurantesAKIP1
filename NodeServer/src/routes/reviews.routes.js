@@ -72,17 +72,22 @@ const {ObjectID} = require("mongodb");
 // );
 //
 
-// Agregar un comentario
-router.post('/', async (req, res) =>
+// Agregar una review
+router.post('/:idRestaurant', async (req, res) =>
     {
-        const db = await connect();
-        const review =
-            {
-                restaurantId: req.body.restaurantId,
-                commentary: req.body.commentary
-            };
-        const result = await db.collection("review").insertOne(review);
-        res.send('Comentario agregado exitosamente');
+      const {idRestaurant} = req.params;
+      const db = await connect();
+      const review =
+          {
+              idRestaurant: ObjectID(idRestaurant),
+              userId: req.body.userId,
+              date: new Date().getDate(),
+              score: req.body.score,
+              price: req.body.price,
+              comment: req.body.comment
+          };
+      const result = await db.collection("reviews").insertOne(review);
+      res.send('Reseña agregada exitosamente');
     }
 );
 
