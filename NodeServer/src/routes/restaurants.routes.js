@@ -1,6 +1,6 @@
 import {Router} from 'express';
 const router = Router();
-
+const path = require('path');
 // bluebird.promisifyAll(redis);
 
 //Database connection
@@ -56,18 +56,74 @@ const {ObjectID} = require("mongodb");
 //
 // );
 
-// Consulta un restaurante por nombre
-router.get('/:nombreRestaurante', async (req, res) => {
-    const {nombreRestaurante} = req.params;
+// Consulta un restaurante por id de mongo
+router.get('/:restaurantId', async (req, res) => {
+    const {restaurantId} = req.params;
 
     const db = await connect();
-    const result = await db.collection('restaurants').findOne({name: nombreRestaurante});
+    const info = await db.collection('restaurants').findOne({_id: ObjectID(restaurantId)});
+    const reviewsMongo = await db.collection('reviews').find({idRestaurant: ObjectID(restaurantId)}).toArray();
+    const imagesMongo = await db.collection('images').find({idRestaurant: ObjectID(restaurantId)}).toArray();
+
+    const images = [];
+    const reviews = [];
+
+    for (var i = 0; i < imagesMongo.length; i++) {
+      images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+    }
+
+    for (var i = 0; i < reviewsMongo.length; i++) {
+      reviews.push(reviewsMongo[i]);
+    }
+
+    info.images = images;
+    info.reviews = reviews;
+
     // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
     // console.log(jsonResult);
-    res.json(result);
+    res.json(info);
 
 }
 );
+
+// Consulta todos los restaurantes
+router.get('/', async (req, res) => {
+    // const {restaurantId} = req.params;
+
+    const db = await connect();
+    const restaurantsMongo = await db.collection('restaurants').find({}).toArray();
+
+    for (var z = 0; z < restaurantsMongo.length; z++) {
+      const restaurantId = restaurantsMongo[z]._id;
+
+      const reviewsMongo = await db.collection('reviews').find({idRestaurant: ObjectID(restaurantId)}).toArray();
+      const imagesMongo = await db.collection('images').find({idRestaurant: ObjectID(restaurantId)}).toArray();
+
+      var images = [];
+      var reviews = [];
+
+      for (var i = 0; i < imagesMongo.length; i++) {
+        images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+      }
+
+      for (var i = 0; i < reviewsMongo.length; i++) {
+        reviews.push(reviewsMongo[i]);
+      }
+
+      restaurantsMongo[z].images = images;
+      restaurantsMongo[z].reviews = reviews;
+
+    }
+
+
+
+    // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
+    // console.log(jsonResult);
+    res.json(restaurantsMongo);
+
+}
+);
+
 
 // Consulta todos los restaurantes
 router.get('/', async (req, res) => {
@@ -94,7 +150,7 @@ router.post('/', async (req, res) =>
                 location: req.body.location,
                 foodType: req.body.foodType,
                 contact: req.body.contact,
-                schedule: req.body.scheule
+                schedule: req.body.schedule
             };
         const result = await db.collection("restaurants").insertOne(restaurant);
         res.send('Restaurante agregado exitosamente');

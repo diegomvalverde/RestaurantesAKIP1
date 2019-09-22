@@ -97,16 +97,16 @@ router.get('/:idRestaurante', async (req, res) => {
     const result = await db.collection('images').find({idRestaurant: ObjectID(idRestaurante)}).toArray();
     // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
     // console.log(jsonResult);
+    const images = [];
 
-    const image = path.join(__dirname, '/../uploads/' +result[1].imageDir);
+    // console.log(result.length);
 
-    console.log(result.length);
-
-    for (var
-      i = 0; i < result.length; i++) {
+    for (var i = 0; i < result.length; i++) {
       // res.push(result[i].imageDir)
+      // console.log(result[i]);
+      images.push(path.join('http://localhost:3000/' +result[i].imageDir));
     }
-    res.sendFile(image);
+    res.json(images);
 
 }
 );
