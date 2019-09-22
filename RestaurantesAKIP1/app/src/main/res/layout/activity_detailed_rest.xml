@@ -67,6 +67,7 @@
             </LinearLayout>
 
             <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs_restaurantInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="0"
@@ -88,6 +89,13 @@
                     android:layout_height="wrap_content"
                     android:text="Comentarios" />
             </com.google.android.material.tabs.TabLayout>
+
+            <androidx.viewpager.widget.ViewPager
+                android:id="@+id/container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
+
         </LinearLayout>
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,7 +46,7 @@ public class SearchActivity extends AppCompatActivity {
         SearchActivity.this.startActivity(intent);
     }
 
-    
+
     public void openDetailedInfo(View v){
         Intent myIntent = new Intent(SearchActivity.this, DetailedRestActivity.class);
         SearchActivity.this.startActivity(myIntent);
