@@ -5,13 +5,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:paddingTop="10dp"
     tools:context=".Presentations.Fragments.InformationFragment">
 
     <!-- TODO: Update blank fragment layout -->
 
     <fragment
-        android:id="@+id/fragment"
+        android:id="@+id/frag_mapLocation"
         android:name="com.example.restaurantesakip1.Presentations.Fragments.LocationFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -33,21 +32,22 @@
 
 
             <TableLayout
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:id="@+id/table_address"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp">
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:paddingEnd="10dp"
                         android:paddingStart="5dp"
+                        android:paddingEnd="10dp"
                         android:src="@drawable/map_icon" />
 
                     <TextView
@@ -66,26 +66,26 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@android:color/black"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp" />
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp" />
 
             <TableLayout
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:id="@+id/table_contact"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp">
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    >
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
-                        android:paddingEnd="10dp"
                         android:paddingStart="5dp"
+                        android:paddingEnd="10dp"
                         android:src="@drawable/telephone" />
 
                     <TextView
@@ -102,18 +102,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@android:color/black"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp" />
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp" />
 
             <TableLayout
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:id="@+id/table_foodTypes"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp">
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/imageView4"
@@ -139,18 +140,19 @@
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
                 android:background="@android:color/black"
-                android:paddingEnd="20dp"
-                android:paddingStart="20dp" />
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp" />
 
             <TableLayout
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
+                android:id="@+id/table_schedule"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp">
 
                 <TableRow
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" >
+                    android:layout_height="match_parent">
 
                     <ImageView
                         android:id="@+id/imageView5"
@@ -171,7 +173,6 @@
                         android:textSize="20dp" />
                 </TableRow>
             </TableLayout>
-
 
 
             <LinearLayout

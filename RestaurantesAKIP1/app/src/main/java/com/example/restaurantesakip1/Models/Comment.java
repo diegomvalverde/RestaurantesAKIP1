@@ -8,4 +8,11 @@ public class Comment {
     public int restaurantId;
     public Date date;
     public String body;
+
+
+    public Comment(int id){
+        date = new Date();
+        userId = 666;
+        body = "Dude, el mejor chifrijo de la vida";
+    }
 }
