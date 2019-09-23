@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -36,6 +37,14 @@ public class Restaurant {
         this.schedule = new HashMap<String, String>() {{
             put("Lunes", "6:00AM-11:00PM");
             put("Martes", "12:00AM - 11:50PM");
+        }};
+
+        this.imagesUrls = new LinkedList<>();
+        this.imagesUrls.add("http://www.liveincostarica.com/blog/wp-content/uploads/2018/11/chifrijo-costa-rica-672x372.jpg");
+
+        this.comments = new LinkedList<Comment>(){{
+            add(new Comment(0));
+            add(new Comment(1));
         }};
     }
 

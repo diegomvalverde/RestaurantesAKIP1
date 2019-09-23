@@ -23,21 +23,22 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
         Comment comment = getItem(position);
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_restaurant, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_comment, parent, false);
         }
         // Lookup view for data population
 
-        TextView txtUsername = (TextView) convertView.findViewById(R.id.txt_itemUsername);
-        TextView txtDate = (TextView) convertView.findViewById(R.id.txt_itemDatePosted);
-        TextView txtBody = (TextView) convertView.findViewById(R.id.txt_itemCommentBody);
+        TextView txtUsername = convertView.findViewById(R.id.txt_itemUsername);
+        TextView txtDate = convertView.findViewById(R.id.txt_itemDatePosted);
+        TextView txtBody = convertView.findViewById(R.id.txt_itemCommentBody);
 
 
-
-        txtUsername.setText( Integer.toString(comment.userId) );
-        txtDate.setText(comment.date.toString());
-        txtBody.setText(comment.body);
-
-
+        if (comment != null) {
+            txtUsername.setText( Integer.toString(comment.userId) );
+            txtDate.setText(comment.date.toString());
+            txtBody.setText(comment.body);
+        } else {
+            System.out.println(position);
+        }
 
 
 

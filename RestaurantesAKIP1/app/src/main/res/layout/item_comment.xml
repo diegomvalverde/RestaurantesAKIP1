@@ -16,6 +16,8 @@
             android:layout_weight="0"
             android:text="Nombre de usuario"
             android:textColor="@color/browser_actions_text_color"
+
+
             android:textSize="16dp" />
 
         <TextView
@@ -34,6 +36,8 @@
         android:text="Cuerpo del comentario"
         android:minLines="1"
         android:maxLines="10"
+        android:paddingBottom="15dp"
+        android:paddingTop="5dp"
         android:paddingStart="5dp"
         android:paddingEnd="5dp"
         android:textColor="@color/browser_actions_text_color" />

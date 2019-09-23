@@ -38,8 +38,6 @@ public class LocationFragment extends SupportMapFragment implements OnMapReadyCa
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-
-
         // Inflate the layout for this fragment
         //View v = inflater.inflate(R.layout.fragment_location, container, false);
         View rootView = super.onCreateView(inflater, container, savedInstanceState);
@@ -54,10 +52,8 @@ public class LocationFragment extends SupportMapFragment implements OnMapReadyCa
         if (pointingAt == null)
             pointingAt = new LatLng(36.679582, -5.444791);
 
-        float zoom = 15;
-
+        float zoom = 20;
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pointingAt, zoom));
-
         googleMap.addMarker(new MarkerOptions().position(pointingAt));
     }
 }

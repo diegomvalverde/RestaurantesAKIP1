@@ -46,8 +46,8 @@ public class DetailedRestActivity extends AppCompatActivity {
     public void setupViewPager(ViewPager viewPager, Restaurant restaurant){
         SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
         adapter.addFragment(new InformationFragment(restaurant), "Informacion");
-        adapter.addFragment(new GalleryFragment(), "Galeria");
-        adapter.addFragment(new CommentsFragment(), "Comentarios");
+        adapter.addFragment(new GalleryFragment(restaurant), "Galeria");
+        adapter.addFragment(new CommentsFragment(restaurant), "Comentarios");
         viewPager.setAdapter(adapter);
     }
 }

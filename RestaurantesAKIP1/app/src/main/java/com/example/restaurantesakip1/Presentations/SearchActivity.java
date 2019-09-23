@@ -32,8 +32,6 @@ public class SearchActivity extends AppCompatActivity {
         this.lv_search = findViewById(R.id.lv_searchResults);
 
         this.restaurantsResults = RestaurantRepository.getInstace().localDB;
-        //this.restaurantsResults.add(new Restaurant("Coma feliz"));
-        //this.restaurantsResults.add(new Restaurant("Dennos su plata"));
 
         this.searchAdapter = new SearchAdapter(this, this.restaurantsResults);
         this.lv_search.setAdapter(this.searchAdapter);
