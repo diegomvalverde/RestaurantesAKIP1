@@ -8,13 +8,19 @@ import java.util.List;
 
 public class RestaurantRepository implements Repository<Restaurant> {
 
-    List<Restaurant> localDB;
+    public List<Restaurant> localDB;
+    public static RestaurantRepository instance = new RestaurantRepository();
 
-    RestaurantRepository(){
+    private RestaurantRepository(){
         localDB = new ArrayList<>();
-        localDB.add(new Restaurant("Coma feliz"));
-        localDB.add(new Restaurant("Dennos su plata"));
+        localDB.add(new Restaurant(0, "Coma feliz"));
+        localDB.add(new Restaurant(1, "Dennos su plata"));
     }
+
+    static public RestaurantRepository getInstace(){
+        return instance;
+    }
+
 
 
     @Override

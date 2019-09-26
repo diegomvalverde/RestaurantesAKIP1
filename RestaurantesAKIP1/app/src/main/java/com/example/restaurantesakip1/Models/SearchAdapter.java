@@ -27,8 +27,8 @@ public class SearchAdapter extends ArrayAdapter<Restaurant> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_restaurant, parent, false);
         }
         // Lookup view for data population
-        TextView txtName = (TextView) convertView.findViewById(R.id.txt_itemRestName);
-        TextView txtScore = (TextView) convertView.findViewById(R.id.txt_itemRestScore);
+        TextView txtName = convertView.findViewById(R.id.txt_itemRestName);
+        TextView txtScore = convertView.findViewById(R.id.txt_itemRestScore);
 
         txtName.setText(restaurant.name);
         txtScore.setText(Float.toString(restaurant.getScore()));

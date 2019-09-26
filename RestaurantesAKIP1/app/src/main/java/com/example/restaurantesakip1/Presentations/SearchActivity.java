@@ -9,6 +9,7 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.example.restaurantesakip1.Data.RestaurantRepository;
 import com.example.restaurantesakip1.Models.Restaurant;
 import com.example.restaurantesakip1.Models.SearchAdapter;
 import com.example.restaurantesakip1.R;
@@ -29,9 +30,8 @@ public class SearchActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         this.lv_search = findViewById(R.id.lv_searchResults);
-        this.restaurantsResults = new LinkedList<>();
-        this.restaurantsResults.add(new Restaurant("Coma feliz"));
-        this.restaurantsResults.add(new Restaurant("Dennos su plata"));
+
+        this.restaurantsResults = RestaurantRepository.getInstace().localDB;
 
         this.searchAdapter = new SearchAdapter(this, this.restaurantsResults);
         this.lv_search.setAdapter(this.searchAdapter);
@@ -43,12 +43,12 @@ public class SearchActivity extends AppCompatActivity {
         Restaurant restaurant = this.restaurantsResults.get(index);
         Intent intent = new Intent(SearchActivity.this, DetailedRestActivity.class);
         intent.putExtra("RESTAURANT_ID", restaurant.id);
-        SearchActivity.this.startActivity(intent);
+        this.startActivity(intent);
     }
 
-    
+
     public void openDetailedInfo(View v){
         Intent myIntent = new Intent(SearchActivity.this, DetailedRestActivity.class);
-        SearchActivity.this.startActivity(myIntent);
+        //SearchActivity.this.startActivity(myIntent);
     }
 }
