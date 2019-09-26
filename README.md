@@ -28,3 +28,5 @@ Pasos para ejecutar el proyecto:
 * Insomnia
 * Git Desktop
 * MongoDB Compass
+* Heriko
+* Mongo Atlas
