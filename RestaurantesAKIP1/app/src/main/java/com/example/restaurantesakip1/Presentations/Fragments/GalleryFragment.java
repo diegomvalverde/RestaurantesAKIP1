@@ -31,6 +31,10 @@ public class GalleryFragment extends Fragment {
         restaurantData = restaurant;
     }
 
+    public GalleryFragment() {
+        // Required empty public constructor  :p
+    }
+
     private void setupGallery(View myView){
         imagesContainer = myView.findViewById(R.id.linl_restaurantGallery);
 
@@ -42,7 +46,6 @@ public class GalleryFragment extends Fragment {
                 System.out.println(e.toString());
             }
         }
-
     }
 
     @Override

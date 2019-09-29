@@ -1,9 +1,15 @@
 package com.example.restaurantesakip1.Presentations.Fragments;
 
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,4 +43,5 @@ public class SectionsPageAdapter extends FragmentPagerAdapter {
     public int getCount() {
         return fragmentsList.size();
     }
+
 }

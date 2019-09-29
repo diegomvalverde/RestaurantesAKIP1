@@ -16,8 +16,6 @@
             android:layout_weight="0"
             android:text="Nombre de usuario"
             android:textColor="@color/browser_actions_text_color"
-
-
             android:textSize="16dp" />
 
         <TextView

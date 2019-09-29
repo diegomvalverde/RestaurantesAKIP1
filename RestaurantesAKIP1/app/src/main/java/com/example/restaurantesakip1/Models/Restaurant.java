@@ -1,6 +1,7 @@
 package com.example.restaurantesakip1.Models;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +10,16 @@ import java.util.List;
 import java.util.Map;
 
 public class Restaurant {
-    public int id = 0;
+    public int id;
+
+    @SerializedName("_id")
+    public String _id;
+
+    @SerializedName("name")
     public String name;
+
+    @SerializedName("description")
+    public String description;
 
     public LatLng latLng;
     public String address;
@@ -19,10 +28,18 @@ public class Restaurant {
 
     public List<String> foodTypes;
     public List<String> imagesUrls;
+
+    @SerializedName("schedule")
     public Map<String, String> schedule;
 
     public List<Review> reviews;
     public List<Comment> comments;
+
+    public Restaurant(String _id, String name, String description){
+        this._id = _id;
+        this.name = name;
+        this.description = description;
+    }
 
     public Restaurant(int id, String name) {
         this.id = id;

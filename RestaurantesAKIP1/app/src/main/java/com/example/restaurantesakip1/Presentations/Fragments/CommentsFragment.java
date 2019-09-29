@@ -30,6 +30,10 @@ public class CommentsFragment extends Fragment {
 
     private Restaurant restaurantData;
 
+    public CommentsFragment() {
+        // Required empty public constructor  :p
+    }
+
     public CommentsFragment(Restaurant restaurant) {
         this.restaurantData = restaurant;
         // Required empty public constructor

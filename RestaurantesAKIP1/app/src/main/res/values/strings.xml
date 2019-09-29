@@ -3,6 +3,29 @@
     <string name="facebook_app_id">1098329053706025</string>
     <string name="fb_login_protocol_scheme">fb1098329053706025</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string-array name="prices_array">
+        <item>Cualquiera</item>
+        <item>Barato</item>
+        <item>Medio</item>
+        <item>Caro</item>
+    </string-array>
+
+    <string-array name="score_array">
+        <item>Cualquiera</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+    </string-array>
+
+    <string-array name="typeFood_array">
+        <item>Cualquiera</item>
+        <item>Americana</item>
+        <item>Rapida</item>
+        <item>Tipica</item>
+        <item>Asiatica</item>
+        <item>Fina</item>
+    </string-array>
+
 </resources>

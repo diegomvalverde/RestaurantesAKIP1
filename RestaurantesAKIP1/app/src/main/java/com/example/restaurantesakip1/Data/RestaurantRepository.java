@@ -1,10 +1,24 @@
 package com.example.restaurantesakip1.Data;
 
+import android.os.AsyncTask;
+import android.util.JsonReader;
+
 import com.example.restaurantesakip1.Models.Restaurant;
 
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import javax.net.ssl.HttpsURLConnection;
 
 public class RestaurantRepository implements Repository<Restaurant> {
 
@@ -43,5 +57,11 @@ public class RestaurantRepository implements Repository<Restaurant> {
     @Override
     public void remove(Restaurant item) {
 
+    }
+
+    @Override
+    public List<Restaurant> query(JSONObject specification) {
+
+        return null;
     }
 }

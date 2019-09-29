@@ -33,12 +33,10 @@ public class SearchAdapter extends ArrayAdapter<Restaurant> {
         txtName.setText(restaurant.name);
         txtScore.setText(Float.toString(restaurant.getScore()));
 
-
-
-
         // Populate the data into the template view using the data object
 
         // Return the completed view to render on screen
         return convertView;
     }
+
 }

@@ -1,54 +1,43 @@
 package com.example.restaurantesakip1.Presentations;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
+
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
-import com.example.restaurantesakip1.Data.RestaurantRepository;
-import com.example.restaurantesakip1.Models.Restaurant;
-import com.example.restaurantesakip1.Models.SearchAdapter;
+import com.example.restaurantesakip1.Presentations.Fragments.AddFragment;
+import com.example.restaurantesakip1.Presentations.Fragments.SearchFragment;
+import com.example.restaurantesakip1.Presentations.Fragments.SectionsPageAdapter;
 import com.example.restaurantesakip1.R;
+import com.google.android.material.tabs.TabLayout;
 
-import java.util.LinkedList;
-import java.util.List;
+
 
 
 public class SearchActivity extends AppCompatActivity {
 
-    public ListView lv_search;
-    public List<Restaurant> restaurantsResults;
-    public ArrayAdapter<Restaurant> searchAdapter;
-
+    public SectionsPageAdapter pagesAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
-        this.lv_search = findViewById(R.id.lv_searchResults);
 
-        this.restaurantsResults = RestaurantRepository.getInstace().localDB;
+        pagesAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 
-        this.searchAdapter = new SearchAdapter(this, this.restaurantsResults);
-        this.lv_search.setAdapter(this.searchAdapter);
-
-        this.lv_search.setOnItemClickListener( (adapterView, view, i, l) -> openDetailedInfo(i));
+        ViewPager viewPager = findViewById(R.id.search_container);
+        setupViewPager(viewPager);
+        TabLayout tabLayout = findViewById(R.id.tabs_options);
+        tabLayout.setupWithViewPager(viewPager);
     }
 
-    public void openDetailedInfo(int index){
-        Restaurant restaurant = this.restaurantsResults.get(index);
-        Intent intent = new Intent(SearchActivity.this, DetailedRestActivity.class);
-        intent.putExtra("RESTAURANT_ID", restaurant.id);
-        this.startActivity(intent);
+    public void setupViewPager(ViewPager viewPager){
+        SectionsPageAdapter adapter = new SectionsPageAdapter(getSupportFragmentManager());
+        adapter.addFragment(new SearchFragment(), "Buscar");
+        adapter.addFragment(new AddFragment(), "Agregar");
+        viewPager.setAdapter(adapter);
     }
 
 
-    public void openDetailedInfo(View v){
-        Intent myIntent = new Intent(SearchActivity.this, DetailedRestActivity.class);
-        //SearchActivity.this.startActivity(myIntent);
-    }
 }

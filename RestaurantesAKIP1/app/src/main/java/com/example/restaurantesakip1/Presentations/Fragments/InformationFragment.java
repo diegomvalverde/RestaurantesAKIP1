@@ -32,6 +32,10 @@ public class InformationFragment extends Fragment {
         this.restaurantData = restaurant;
     }
 
+    public InformationFragment() {
+        // Required empty public constructor  :p
+    }
+
     private void setupMap(View view){
         LocationFragment fragMap = (LocationFragment) getChildFragmentManager().findFragmentById(R.id.frag_mapLocation);
         fragMap.setPointingAt(restaurantData.latLng);
@@ -42,8 +46,6 @@ public class InformationFragment extends Fragment {
         TableRow bigRow = new TableRow(this.getContext());
         bigRow.addView( new Space(this.getContext()) );
         TableLayout tbDetail = new TableLayout(this.getContext());
-
-
 
         for ( String key : restaurantData.schedule.keySet() ){
             String times = restaurantData.schedule.get(key);
