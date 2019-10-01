@@ -18,14 +18,9 @@ import com.example.restaurantesakip1.Data.RetrofitClient;
 import com.example.restaurantesakip1.Models.Restaurant;
 import com.example.restaurantesakip1.Models.SearchAdapter;
 import com.example.restaurantesakip1.Presentations.DetailedRestActivity;
-import com.example.restaurantesakip1.Presentations.SearchActivity;
 import com.example.restaurantesakip1.R;
 
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -39,6 +34,7 @@ public class SearchFragment extends Fragment {
     public List<Restaurant> restaurantsResults;
     public ArrayAdapter<Restaurant> searchAdapter;
     public EditText searchBar;
+    public boolean resultsInList;
 
 
     public SearchFragment() {
@@ -46,11 +42,26 @@ public class SearchFragment extends Fragment {
     }
 
     public void showResults(List<Restaurant> restaurants){
+        //List results
         this.restaurantsResults = restaurants;
         this.searchAdapter.clear();
         this.searchAdapter.addAll(restaurants);
         this.searchAdapter.notifyDataSetChanged();
+
+        //Map results
+        MapResultsFragment fragMap = (MapResultsFragment) getChildFragmentManager().findFragmentById(R.id.frag_mapResults);
+        if (fragMap == null){
+            System.out.println("Here we got an error");
+        } else
+            fragMap.pinPointRestaurants(restaurants);
     }
+
+    public void showMoreInfo(Restaurant restaurant){
+        System.out.println(restaurant.name);
+        //Set some values
+    }
+
+
 
     public void openDetailedInfo(int index){
         Restaurant restaurant = this.restaurantsResults.get(index);

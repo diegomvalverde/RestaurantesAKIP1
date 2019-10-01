@@ -13,14 +13,16 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="vertical">
 
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Ingrese la información del restaurante" />
+            android:text="Nuevo Restaurante"
+            android:textColor="@color/browser_actions_text_color"
+            android:textSize="24sp" />
 
         <TableLayout
             android:layout_width="match_parent"
@@ -44,7 +46,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Ingrese el nombre"
+                    android:hint="Nombre del restaurante"
                     android:inputType="textPersonName" />
             </TableRow>
 
@@ -64,7 +66,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Ingrese número de contacto"
+                    android:hint="Número de contacto"
                     android:inputType="phone" />
             </TableRow>
 
@@ -75,6 +77,8 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:paddingStart="0dp"
+                    android:paddingEnd="15dp"
                     android:text="Dirección"
                     android:textColor="@color/browser_actions_text_color"
                     android:textSize="18sp" />
@@ -84,38 +88,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:ems="10"
-                    android:hint="Ingrese la dirección"
+                    android:hint="Dirección en señas"
                     android:inputType="textPersonName" />
             </TableRow>
 
 
         </TableLayout>
 
-        <TableLayout
+        <fragment
+            android:id="@+id/frag_locateRestaurant"
+            android:name="com.example.restaurantesakip1.Presentations.Fragments.LocateFragment"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <EditText
-                    android:id="@+id/tbox_addLat"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Latitud"
-                    android:inputType="numberSigned" />
-
-                <EditText
-                    android:id="@+id/tbox_addLong"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Longitud"
-                    android:inputType="numberSigned" />
-            </TableRow>
-        </TableLayout>
+            android:layout_height="200dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -137,62 +121,48 @@
         </HorizontalScrollView>
 
 
+        <TableRow
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Horario"
+                android:textColor="@color/browser_actions_text_color"
+                android:textSize="18sp" />
+
+            <Button
+                android:id="@+id/btn_addScheduleRow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Añadir" />
+        </TableRow>
+
         <TableLayout
             android:id="@+id/tab_addSchedule"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Horario"
-                    android:textColor="@color/browser_actions_text_color"
-                    android:textSize="18sp" />
-
-                <Button
-                    android:id="@+id/btn_addScheduleRow"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Añadir" />
-            </TableRow>
-
-            <TableRow
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <Space
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <EditText
-                    android:id="@+id/editText3"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Name" />
-
-                <EditText
-                    android:id="@+id/editText4"
-                    android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:text="Name" />
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="TextView" />
-
-            </TableRow>
-
         </TableLayout>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <Button
+                android:id="@+id/btn_saveRestaurant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Guardar" />
+
+            <Button
+                android:id="@+id/btn_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancelar" />
+
+        </TableRow>
 
     </LinearLayout>
 

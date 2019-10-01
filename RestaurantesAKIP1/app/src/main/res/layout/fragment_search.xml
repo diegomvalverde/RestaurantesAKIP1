@@ -5,7 +5,10 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Presentations.Fragments.SearchFragment">
+    android:focusable="true"
+    android:focusableInTouchMode="true"
+    tools:context=".Presentations.Fragments.SearchFragment"
+    >
 
     <!-- TODO: Update blank fragment layout -->
 
@@ -16,7 +19,10 @@
         android:layout_weight="0"
         android:ems="10"
         android:hint="Buscar restaurante"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:nextFocusUp="@id/tbox_searchBar"
+        android:nextFocusLeft="@id/tbox_searchBar"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -24,6 +30,7 @@
         android:layout_weight="0"
         android:gravity="center"
         android:orientation="horizontal"
+
         android:paddingTop="10dp"
         android:paddingBottom="10dp">
 
@@ -102,6 +109,7 @@
                     android:layout_weight="0"
                     android:ems="10"
                     android:inputType="number"
+                    android:focusable="false"
                     android:text="50" />
 
             </LinearLayout>
@@ -138,7 +146,16 @@
         android:id="@+id/lv_searchResults"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0" />
+        android:layout_weight="0"
+        android:visibility="gone" >
+
+    </ListView>
+
+    <fragment
+        android:id="@+id/frag_mapResults"
+        android:name="com.example.restaurantesakip1.Presentations.Fragments.MapResultsFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
 
 </LinearLayout>

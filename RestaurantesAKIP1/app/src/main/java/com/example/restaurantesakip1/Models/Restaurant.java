@@ -21,6 +21,9 @@ public class Restaurant {
     @SerializedName("description")
     public String description;
 
+    @SerializedName("location")
+    public  List<Double> location;
+
     public LatLng latLng;
     public String address;
     public float score; //Puede que sea solo el metodo de abajo
@@ -72,5 +75,9 @@ public class Restaurant {
             x += r.score;
         }
         return x;
+    }
+
+    public LatLng getLatLng() {
+        return new LatLng(location.get(0), location.get(1));
     }
 }
