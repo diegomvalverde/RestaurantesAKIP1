@@ -113,7 +113,8 @@ function () {
   var _ref2 = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee2(req, res) {
-    var db, user, result;
+    var db, user, result, _result;
+
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
@@ -131,13 +132,31 @@ function () {
               password: req.body.password
             };
             _context2.next = 6;
-            return db.collection("users").insertOne(user);
+            return db.collection("users").findOne({
+              email: user.email
+            });
 
           case 6:
             result = _context2.sent;
-            res.send('Usuario agregado exitosamente');
 
-          case 8:
+            if (!(result == null)) {
+              _context2.next = 14;
+              break;
+            }
+
+            _context2.next = 10;
+            return db.collection("users").insertOne(user);
+
+          case 10:
+            _result = _context2.sent;
+            res.send('Usuario agregado exitosamente');
+            _context2.next = 15;
+            break;
+
+          case 14:
+            res.send("El usuario ya existe, el correo ya está en uso");
+
+          case 15:
           case "end":
             return _context2.stop();
         }

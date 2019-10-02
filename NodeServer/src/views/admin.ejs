@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Administrador</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/login.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+      function agregarCliente()
+      {
+        $.ajax
+        (
+          {
+            data:  $("#formulario").serialize(), //lo que se va a enviar
+            url: "http://localhost/ConexionSQL/conexion.php", // .php que recibe la petición
+            type:  'post', //método de envio
+            success:  function (response)
+            { //procesado de la respuesta del .php
+              $("#resultado").html(response);
+              // alert(response);
+              if (response == 1)
+              {
+                alert("Se ha agregado satisfactoriamente al usuario")
+                document.getElementById("clientId").value="";
+                document.getElementById("clientName").value="";
+                document.getElementById("clientPassword").value="";
+              }
+              else
+              {
+                alert(response);
+                // alert("Por favor verfique sus datos");
+              }
+            }
+          }
+        );
+      }
+    </script>
+    <script>
+      function agregarCuenta()
+      {
+        $.ajax
+        (
+          {
+            data:  $("#formulario").serialize(), //lo que se va a enviar
+            url: "http://localhost/ConexionSQL/conexion.php", // .php que recibe la petición
+            type:  'post', //método de envio
+            success:  function (response)
+            { //procesado de la respuesta del .php
+              $("#resultado").html(response);
+              // alert(response);
+              if (response == 1)
+              {
+                alert("Se ha agregado satisfactoriamente la cuenta")
+                document.getElementById("ownerId").value="";
+                document.getElementById("accountType").value="";
+              }
+              else
+              {
+                alert(response);
+                // alert("Por favor verfique sus datos");
+              }
+            }
+          }
+        );
+      }
+    </script>
+  </head>
+  <body>
+    <div class="container-fluid bg-dark py-2">
+      <div class="container text-white">
+        <h3>Administración de usuarios y cuentas</h3>
+        <p>Se pueden administrar agregar cuentas y clientes al sistema.</p>
+      </div>
+      <hr class="bg-white">
+    </div>
+
+    <form method="post" id="formulario">
+    <div class="container-fluid py-5 text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-4">
+          <p>Agregar usuario</p>
+        </div>
+        <div class="col-4">
+
+        </div>
+        <div class="col-4">
+          <p>Agregar Cuenta</p>
+        </div>
+      </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-4">
+          <label for="usr">Identificación:</label>
+          <input type="text" class="form-control" name="clientId" id="clientId">
+        </div>
+        <div class="col-4">
+
+        </div>
+        <div class="col-4">
+          <label for="usr">Identificación del dueño:</label>
+          <input type="text" class="form-control" name="ownerId" id="ownerId">
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-4">
+          <label for="usr">Nombre:</label>
+          <input type="text" class="form-control" name="clientName" id="clientName">
+        </div>
+        <div class="col-4">
+
+        </div>
+        <div class="col-4">
+          <label for="usr">Tipo de cuenta:</label>
+          <input type="text" class="form-control" name="accountType" id="accountType">
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-4">
+          <label for="usr">Contraseña:</label>
+          <input type="text" class="form-control" name="clientPassword" id="clientPassword">
+        </div>
+        <div class="col-4">
+
+        </div>
+        <div class="col-4">
+          <br>
+          <button type="button" class="btn btn-primary" onclick="agregarCuenta();"name="button">Agregar Cuenta</button>
+        </div>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="container">
+      <div class="row">
+        <div class="col-4">
+          <button type="button" class="btn btn-primary" onclick="agregarCliente();">Agregar Cliente</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </form>
+  </body>
+</html>

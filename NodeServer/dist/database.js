@@ -28,7 +28,7 @@ function _connect() {
           case 0:
             _context.prev = 0;
             _context.next = 3;
-            return _mongodb["default"].connect('mongodb://localhost:27017', {
+            return _mongodb["default"].connect('mongodb+srv://restaurants:restaurants@restaurants-k146u.mongodb.net/test?retryWrites=true&w=majority', {
               useNewUrlParser: true,
               connectTimeoutMS: 1000,
               socketTimeoutMS: 1000,
