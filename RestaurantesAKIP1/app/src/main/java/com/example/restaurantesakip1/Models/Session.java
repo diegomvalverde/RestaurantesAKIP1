@@ -9,13 +9,13 @@ public class Session {
     public User user = null;
     public String token = null;
 
-    private Session session = new Session();
+    private static Session session = new Session();
 
     private Session(){
 
     }
 
-    public Session getInstace(){
+    public static Session getInstace(){
         return session;
     }
 }

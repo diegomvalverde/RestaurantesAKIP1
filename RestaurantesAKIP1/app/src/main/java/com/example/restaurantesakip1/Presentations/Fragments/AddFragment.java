@@ -15,19 +15,23 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.example.restaurantesakip1.Data.RestaurantService;
+import com.example.restaurantesakip1.Data.RetrofitClient;
 import com.example.restaurantesakip1.Models.Restaurant;
+import com.example.restaurantesakip1.Models.Session;
 import com.example.restaurantesakip1.R;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,7 +47,7 @@ public class AddFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public void delelete(View v){
+    public void deleleteRow(View v){
         String code = v.getTag().toString();
         keys.removeIf( e -> e.getTag().toString().equals(code));
         values.removeIf( e -> e.getTag().toString().equals(code));
@@ -63,17 +67,74 @@ public class AddFragment extends Fragment {
         }
     }
 
+    public void clearData(){
+        EditText name = myView.findViewById(R.id.tbox_addName);
+        name.setText("");
+        EditText number = myView.findViewById(R.id.tbox_addContact);
+        number.setText("");
+        EditText address = myView.findViewById(R.id.tbox_addAddress);
+        address.setText("");
+        LocateFragment fragMap = (LocateFragment) getChildFragmentManager().findFragmentById(R.id.frag_locateRestaurant);
+        if (fragMap != null) {
+            fragMap.map.clear();
+            fragMap.point = null;
+        }
+
+        TableLayout tbSchedule = myView.findViewById(R.id.tab_addSchedule);
+
+        for (TableRow currentT : rowsOnScreen){
+            tbSchedule.removeView(currentT);
+        }
+        rowsOnScreen = new ArrayList<>();
+        keys = new ArrayList<>();
+        values = new ArrayList<>();
+    }
+
+    private int isDataValid(){
+        String name = ((EditText) myView.findViewById(R.id.tbox_addName)).getText().toString();
+        int errors = 0;
+        if (name.equals("")){
+            System.out.println("Debe de ingresar un nombre.");
+            errors++;
+        }
+
+        String number = ((EditText) myView.findViewById(R.id.tbox_addContact)).getText().toString();
+
+        if (number.equals("")){
+            System.out.println("Debe de ingresar un contacto.");
+            errors++;
+        }
+
+        String address = ((EditText) myView.findViewById(R.id.tbox_addAddress)).getText().toString();
+
+        if (address.equals("")){
+            System.out.println("Debe de ingresar una dirección.");
+            errors++;
+        }
+
+        LocateFragment fragMap = (LocateFragment) getChildFragmentManager().findFragmentById(R.id.frag_locateRestaurant);
+        if (fragMap == null || fragMap.point == null){
+            System.out.println("Debe de ingresar una dirección.");
+            errors++;
+        }
+
+        return errors;
+    }
+
     //Literraly hurt me doing this
     //Basically a builder for restaurants
     public void createRestuarant(){
+        if (isDataValid() > 0){
+            //Los errores ya se muestran en esta función
+            return;
+        }
         String name = ((EditText) myView.findViewById(R.id.tbox_addName)).getText().toString();
         String number = ((EditText) myView.findViewById(R.id.tbox_addContact)).getText().toString();
-        int contact = Integer.parseInt(number);
         String address = ((EditText) myView.findViewById(R.id.tbox_addAddress)).getText().toString();
-
-
         LocateFragment fragMap = (LocateFragment) getChildFragmentManager().findFragmentById(R.id.frag_locateRestaurant);
-        System.out.println(fragMap.point);
+        List<Double> location = new ArrayList<>();
+        location.add(fragMap.point.latitude);
+        location.add(fragMap.point.longitude);
 
         Map<String, String> schedule = new HashMap<>();
 
@@ -85,9 +146,32 @@ public class AddFragment extends Fragment {
             schedule.put(key, value);
         }
 
-        Restaurant newRestaurant = new Restaurant(0, name);
-        System.out.println("Fine");
+        Restaurant restaurant = new Restaurant(0, name);
+        restaurant.contact = number;
+        restaurant.address = address;
+        restaurant.schedule = schedule;
+        restaurant.location = location;
+
+        RestaurantService service = RetrofitClient.getRetrofitInstance().create(RestaurantService.class);
+        Call<JSONObject> call = service.saveRestaurant("Bearer " + Session.getInstace().token, restaurant);
+
+        call.enqueue(new Callback<JSONObject>() {
+            @Override
+            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
+                System.out.println("Created");
+                clearData();
+                if (response.body() != null)
+                    System.out.println(response.body().toString());
+            }
+
+            @Override
+            public void onFailure(Call<JSONObject> call, Throwable t) {
+                System.out.println("There was an error");
+                System.out.println(t.getCause());
+            }
+        });
     }
+
 
     public void addRowToSchedule(View v){
         String code = "row" + rowsAdded++;
@@ -102,15 +186,15 @@ public class AddFragment extends Fragment {
         EditText tboxKey = new EditText(this.getContext() );
         EditText tboxValue = new EditText(this.getContext() );
 
-        tboxKey.setMinWidth(120);
-        tboxKey.setMaxWidth(120);
+        tboxKey.setMinWidth(300);
+        tboxKey.setMaxWidth(300);
         tboxKey.setHint("Día(s)");
         tboxKey.setTag(code);
         keys.add(tboxKey);
 
 
-        tboxValue.setMinWidth(200);
-        tboxValue.setMaxWidth(200);
+        tboxValue.setMinWidth(300);
+        tboxValue.setMaxWidth(300);
         tboxValue.setHint("Horas");
         tboxValue.setTag(code);
         values.add(tboxValue);
@@ -118,7 +202,7 @@ public class AddFragment extends Fragment {
         TextView txtDelete = new TextView(this.getContext() );
         txtDelete.setText("Eliminar");
         txtDelete.setClickable(true);
-        txtDelete.setOnClickListener( (view) ->  delelete(view) );
+        txtDelete.setOnClickListener( (view) ->  deleleteRow(view) );
         txtDelete.setTag(code);
 
         tRow.addView(tboxKey);
@@ -138,7 +222,7 @@ public class AddFragment extends Fragment {
         Button btn_addRows = myView.findViewById(R.id.btn_addScheduleRow);
         btn_addRows.setOnClickListener( (v) -> addRowToSchedule(v));
 
-        Button btn_save= myView.findViewById(R.id.btn_saveRestaurant);
+        Button btn_save = myView.findViewById(R.id.btn_saveRestaurant);
         btn_save.setOnClickListener( (v) -> createRestuarant());
 
         keys = new ArrayList<>();

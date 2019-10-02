@@ -18,6 +18,11 @@ public class Restaurant {
     @SerializedName("name")
     public String name;
 
+    @SerializedName("contact")
+    public String contact;
+
+    public int phoneNumber;
+
     @SerializedName("description")
     public String description;
 
@@ -27,15 +32,20 @@ public class Restaurant {
     public LatLng latLng;
     public String address;
     public float score; //Puede que sea solo el metodo de abajo
-    public int phoneNumber;
 
+
+    @SerializedName("foodType")
     public List<String> foodTypes;
-    public List<String> imagesUrls;
+
+    @SerializedName("images")
+    public List<String> imagesUrls = new ArrayList<>();
 
     @SerializedName("schedule")
     public Map<String, String> schedule;
 
+    @SerializedName("reviews")
     public List<Review> reviews;
+
     public List<Comment> comments;
 
     public Restaurant(String _id, String name, String description){

@@ -23,11 +23,10 @@ import java.net.URL;
  * A simple {@link Fragment} subclass.
  */
 public class GalleryFragment extends Fragment {
-    private Restaurant restaurantData;
+    public Restaurant restaurantData;
     LinearLayout imagesContainer;
 
     public GalleryFragment(Restaurant restaurant) {
-        // Required empty public constructor  :p
         restaurantData = restaurant;
     }
 
@@ -37,6 +36,7 @@ public class GalleryFragment extends Fragment {
 
     private void setupGallery(View myView){
         imagesContainer = myView.findViewById(R.id.linl_restaurantGallery);
+        System.out.println((restaurantData == null) + " Im i null?");
 
         for (String url : restaurantData.imagesUrls){
             try {

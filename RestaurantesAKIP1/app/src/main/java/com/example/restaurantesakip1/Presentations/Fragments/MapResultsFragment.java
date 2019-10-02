@@ -56,6 +56,7 @@ public class MapResultsFragment extends SupportMapFragment implements OnMapReady
             myMap.addMarker(marker);
             String key = restaurant.getLatLng().toString();
             restaurantMap.put(key, restaurant);
+            System.out.println("Stores " + key);
         }
     }
 
@@ -76,14 +77,19 @@ public class MapResultsFragment extends SupportMapFragment implements OnMapReady
         System.out.println("I loaded");
         myMap = googleMap;
         markersOnMap = new LinkedList<>();
+        restaurantMap = new HashMap<>();
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
                 getActivity();
 
                 SearchFragment parentFrag = ((SearchFragment) MapResultsFragment.this.getParentFragment());
-                if (parentFrag != null)
-                    parentFrag.showMoreInfo( restaurantMap.get( marker.getPosition().toString() ) );
+                if (parentFrag != null) {
+                    parentFrag.showMoreInfo(restaurantMap.get(marker.getPosition().toString()));
+                } else {
+                    System.out.println("BTW err");;
+                    System.out.println("Stores " + marker.getPosition().toString());
+                }
 
                 return false;
             }
