@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Cliente</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/login.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+      function depositar()
+      {
+        $.ajax
+        (
+          {
+            data:  $("#formulario").serialize(), //lo que se va a enviar
+            url: "http://localhost/ConexionSQL/conexion.php", // .php que recibe la petición
+            type:  'post', //método de envio
+            success:  function (response)
+            { //procesado de la respuesta del .php
+              $("#resultado").html(response);
+              // alert(response);
+              if (response == 1)
+              {
+                alert("El deposito se ha hecho de manera correcta");
+                document.getElementById('addressee').value="";
+                document.getElementById('moneyPush').value="";
+
+              }
+              else
+              {
+                alert(response);
+                // alert("Por favor verfique sus datos, el deposito no se ha hecho");
+              }
+            }
+          }
+        );
+      }
+    </script>
+    <script>
+      function estadosCuenta()
+      {
+        $.ajax
+        (
+          {
+            data:  $("#formulario").serialize(), //lo que se va a enviar
+            url: "http://localhost/ConexionSQL/conexion.php", // .php que recibe la petición
+            type:  'post', //método de envio
+            success:  function (response)
+            { //procesado de la respuesta del .php
+              // $("#accountstate").html(response);
+              // alert(response);
+              if (response != "")
+              {
+                alert(response);
+                document.getElementById('accountstate').value=response;
+              }
+              else
+              {
+                // alert(response);
+                alert("Por favor verfique sus datos");
+              }
+            }
+          }
+        );
+      }
+    </script>
+    <script>
+      function valida(e)
+      {
+        tecla = (document.all) ? e.keyCode : e.which;
+
+        //Tecla de retroceso para borrar, siempre la permite
+        if (tecla==8){
+            return true;
+        }
+
+        // Patron de entrada, en este caso solo acepta numeros
+        patron =/[0-9]/;
+        tecla_final = String.fromCharCode(tecla);
+        return patron.test(tecla_final);
+      }
+    </script>
+  </head>
+
+  <body>
+    <div class="container-fluid bg-dark py-2">
+      <div class="container text-white">
+        <h3>Administración de tus cuentas</h3>
+        <p>Se pueden hacer depositos, "retirar" dinero, consultar estados de cuenta y ver información de la cuenta.</p>
+      </div>
+      <hr class="bg-white">
+    </div>
+
+    <div class="container-fluid py-5 text-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-4">
+          <h5>Deposito</h5>
+          <!-- <p>Deposito</p> -->
+        </div>
+        <div class="col-4">
+
+        </div>
+        <div class="col-4">
+          <h5>Ultimos estados de cuenta</h5>
+        </div>
+      </div>
+
+    <form method="post" id="formulario">
+      <div class="container">
+        <div class="row">
+          <div class="col-4">
+            <label for="">Tipo de movimiento:</label>
+            <input type="text" class="form-control" name="movType" id="movType" onkeypress="return valida(event)">
+            <label for="usr">Destinatario:</label>
+            <input type="text" class="form-control" name="addressee" id="addressee">
+            <label for="usr">Monto:</label>
+            <input type="text" class="form-control" name="moneyPush" id="moneyPush" onkeypress="return valida(event)">
+            <br>
+            <button type="button" class="btn btn-primary" onclick='depositar();' name="button">Depositar</button>
+          </div>
+          <div class="col-4">
+
+          </div>
+          <div class="col-4">
+            <label for="usr">Estados de cuenta:</label>
+            <textarea class="form-control" rows="5" id="accountstate"></textarea>
+            <label for="usr">Cuenta:</label>
+            <input type="text" class="form-control" name="accountId" id="accountId" onkeypress="">
+            <br>
+            <button type="button" class="btn btn-primary" onclick='estadosCuenta();' name="button1">Consultar estados</button>
+
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4">
+            <!-- <label for="usr">Destinatario:</label>
+            <input type="text" class="form-control" name="addressee" id="addressee"> -->
+          </div>
+          <div class="col-4">
+
+          </div>
+          <div class="col-4">
+            <!-- <label for="usr">Monto</label>
+            <input type="text" class="form-control" name="moneyGet" id="moneyGet"> -->
+          </div>
+        </div>
+      </div>
+
+
+    </div>
+  </form>
+  </body>
+</html>

@@ -4,7 +4,7 @@ export async function connect()
 {
     try
     {
-        const client = await MongoClient.connect('mongodb://localhost:27017',
+        const client = await MongoClient.connect('mongodb+srv://restaurants:restaurants@restaurants-k146u.mongodb.net/test?retryWrites=true&w=majority',
         {
             useNewUrlParser: true,
             connectTimeoutMS:1000,

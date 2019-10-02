@@ -84,8 +84,15 @@ router.post('/', async (req, res) =>
                 email: req.body.email,
                 password: req.body.password
             };
-        const result = await db.collection("users").insertOne(user);
-        res.send('Usuario agregado exitosamente');
+
+        const result = await db.collection("users").findOne({email:user.email});
+        if (result == null) {
+          const result = await db.collection("users").insertOne(user);
+          res.send('Usuario agregado exitosamente');
+        } else {
+          res.send("El usuario ya existe, el correo ya está en uso");
+        }
+
     }
 );
 

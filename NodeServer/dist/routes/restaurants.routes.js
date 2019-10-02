@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _express = require("express");
 
+var _server = require("../server");
+
 var _database = require("../database");
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -15,194 +17,118 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 var router = (0, _express.Router)();
 
-var path = require('path'); // bluebird.promisifyAll(redis);
-//Database connection
-
+var path = require('path');
 
 // import {ObjectID} from "mongodb";
 var _require = require("mongodb"),
-    ObjectID = _require.ObjectID; // router.get('/', async (req, res) => {});
-// router.get('/', async (req, res) => {
-//     try {
-//         const db = await connect();
-//         const proveedores = await db.collection("proveedores").find({}, {proveedor: "", id: 0}).toArray();
-//         // console.log(proveedores);
-//         const products = [];
-//         for (let i = 0; i < proveedores.length; i++) {
-//             const prov = proveedores[i].proveedor;
-//             try {
-//
-//                 const pro = await db.collection("productos").find({proveedor: prov}).toArray();
-//                 // console.log(pro[0].proveedor);
-//                 const prod = {proveedor:prov, online:1, productos:pro[0].productos};
-//                 redisClient.set(pro[0].proveedor, JSON.stringify(prod));
-//                 products.push(prod);
-//
-//             }
-//             catch(e) {
-//                 // console.log(e)
-//                 if(await redisClient.exists(prov))
-//                 {
-//                     const jsonProductos = JSON.parse(await getAsync(prov));
-//                     // console.log(JSON.parse(productos));
-//                     const prod = {proveedor:prov, online:0, productos:jsonProductos.productos};
-//                     redisClient.set(prov, JSON.stringify(prod));
-//                     products.push(prod);
-//                 }
-//             }
-//         }
-//         // const result = await db.collection("productos").find({}).toArray();
-//         // console.log(proveedores[0].proveedor);
-//         // console.log(proveedores);
-//         res.json(products);
-//     }
-//     catch(e)
-//     {
-//
-//     }
-//     }
-//
-// );
-// Consulta un restaurante por id de mongo
+    ObjectID = _require.ObjectID; // Consulta todos los restaurantes
 
 
-router.get('/:restaurantId',
+router.get('/', _server.validateToken,
 /*#__PURE__*/
 function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
-  regeneratorRuntime.mark(function _callee(req, res) {
-    var restaurantId, db, info, reviewsMongo, imagesMongo, images, reviews, i;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
-      while (1) {
-        switch (_context.prev = _context.next) {
-          case 0:
-            restaurantId = req.params.restaurantId;
-            _context.next = 3;
-            return (0, _database.connect)();
-
-          case 3:
-            db = _context.sent;
-            _context.next = 6;
-            return db.collection('restaurants').findOne({
-              _id: ObjectID(restaurantId)
-            });
-
-          case 6:
-            info = _context.sent;
-            _context.next = 9;
-            return db.collection('reviews').find({
-              idRestaurant: ObjectID(restaurantId)
-            }).toArray();
-
-          case 9:
-            reviewsMongo = _context.sent;
-            _context.next = 12;
-            return db.collection('images').find({
-              idRestaurant: ObjectID(restaurantId)
-            }).toArray();
-
-          case 12:
-            imagesMongo = _context.sent;
-            images = [];
-            reviews = [];
-
-            for (i = 0; i < imagesMongo.length; i++) {
-              images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
-            }
-
-            for (i = 0; i < reviewsMongo.length; i++) {
-              reviews.push(reviewsMongo[i]);
-            }
-
-            info.images = images;
-            info.reviews = reviews; // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
-            // console.log(jsonResult);
-
-            res.json(info);
-
-          case 20:
-          case "end":
-            return _context.stop();
-        }
-      }
-    }, _callee);
-  }));
-
-  return function (_x, _x2) {
-    return _ref.apply(this, arguments);
-  };
-}()); // Consulta todos los restaurantes
-
-router.get('/',
-/*#__PURE__*/
-function () {
-  var _ref2 = _asyncToGenerator(
-  /*#__PURE__*/
   regeneratorRuntime.mark(function _callee2(req, res) {
-    var db, restaurantsMongo, z, restaurantId, reviewsMongo, imagesMongo, images, reviews, i;
     return regeneratorRuntime.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
-            _context2.next = 2;
-            return (0, _database.connect)();
+            console.log(req.body);
+
+            _server.jwt.verify(req.token, 'my_secret_token',
+            /*#__PURE__*/
+            function () {
+              var _ref2 = _asyncToGenerator(
+              /*#__PURE__*/
+              regeneratorRuntime.mark(function _callee(err, data) {
+                var db, restaurantsMongo, z, restaurantId, reviewsMongo, imagesMongo, images, reviews, i;
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        if (!err) {
+                          _context.next = 4;
+                          break;
+                        }
+
+                        res.sendStatus(403);
+                        _context.next = 29;
+                        break;
+
+                      case 4:
+                        _context.next = 6;
+                        return (0, _database.connect)();
+
+                      case 6:
+                        db = _context.sent;
+                        _context.next = 9;
+                        return db.collection('restaurants').find({}).toArray();
+
+                      case 9:
+                        restaurantsMongo = _context.sent;
+                        z = 0;
+
+                      case 11:
+                        if (!(z < restaurantsMongo.length)) {
+                          _context.next = 28;
+                          break;
+                        }
+
+                        restaurantId = restaurantsMongo[z]._id;
+                        _context.next = 15;
+                        return db.collection('reviews').find({
+                          idRestaurant: ObjectID(restaurantId)
+                        }).toArray();
+
+                      case 15:
+                        reviewsMongo = _context.sent;
+                        _context.next = 18;
+                        return db.collection('images').find({
+                          idRestaurant: ObjectID(restaurantId)
+                        }).toArray();
+
+                      case 18:
+                        imagesMongo = _context.sent;
+                        images = [];
+                        reviews = [];
+
+                        for (i = 0; i < imagesMongo.length; i++) {
+                          images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+                        }
+
+                        for (i = 0; i < reviewsMongo.length; i++) {
+                          reviews.push(reviewsMongo[i]);
+                        }
+
+                        restaurantsMongo[z].images = images;
+                        restaurantsMongo[z].reviews = reviews;
+
+                      case 25:
+                        z++;
+                        _context.next = 11;
+                        break;
+
+                      case 28:
+                        // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
+                        // console.log(jsonResult);
+                        res.json(restaurantsMongo);
+
+                      case 29:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee);
+              }));
+
+              return function (_x3, _x4) {
+                return _ref2.apply(this, arguments);
+              };
+            }()); // const {restaurantId} = req.params;
+
 
           case 2:
-            db = _context2.sent;
-            _context2.next = 5;
-            return db.collection('restaurants').find({}).toArray();
-
-          case 5:
-            restaurantsMongo = _context2.sent;
-            z = 0;
-
-          case 7:
-            if (!(z < restaurantsMongo.length)) {
-              _context2.next = 24;
-              break;
-            }
-
-            restaurantId = restaurantsMongo[z]._id;
-            _context2.next = 11;
-            return db.collection('reviews').find({
-              idRestaurant: ObjectID(restaurantId)
-            }).toArray();
-
-          case 11:
-            reviewsMongo = _context2.sent;
-            _context2.next = 14;
-            return db.collection('images').find({
-              idRestaurant: ObjectID(restaurantId)
-            }).toArray();
-
-          case 14:
-            imagesMongo = _context2.sent;
-            images = [];
-            reviews = [];
-
-            for (i = 0; i < imagesMongo.length; i++) {
-              images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
-            }
-
-            for (i = 0; i < reviewsMongo.length; i++) {
-              reviews.push(reviewsMongo[i]);
-            }
-
-            restaurantsMongo[z].images = images;
-            restaurantsMongo[z].reviews = reviews;
-
-          case 21:
-            z++;
-            _context2.next = 7;
-            break;
-
-          case 24:
-            // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
-            // console.log(jsonResult);
-            res.json(restaurantsMongo);
-
-          case 25:
           case "end":
             return _context2.stop();
         }
@@ -210,37 +136,53 @@ function () {
     }, _callee2);
   }));
 
-  return function (_x3, _x4) {
-    return _ref2.apply(this, arguments);
+  return function (_x, _x2) {
+    return _ref.apply(this, arguments);
   };
 }()); // Consulta todos los restaurantes
 
-router.get('/',
+router.get('/:foodtypes',
 /*#__PURE__*/
 function () {
   var _ref3 = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee3(req, res) {
-    var db, result;
+    var foodtypes, food, db, result, i;
     return regeneratorRuntime.wrap(function _callee3$(_context3) {
       while (1) {
         switch (_context3.prev = _context3.next) {
           case 0:
-            _context3.next = 2;
+            foodtypes = req.params.foodtypes;
+            food = [];
+
+            if (!(foodtypes == "types")) {
+              _context3.next = 10;
+              break;
+            }
+
+            _context3.next = 5;
             return (0, _database.connect)();
 
-          case 2:
-            db = _context3.sent;
-            _context3.next = 5;
-            return db.collection('restaurants').find({}).toArray();
-
           case 5:
-            result = _context3.sent;
-            // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
-            // console.log(jsonResult);
-            res.json(result);
+            db = _context3.sent;
+            _context3.next = 8;
+            return db.collection('foodtypes').find({}).toArray();
 
-          case 7:
+          case 8:
+            result = _context3.sent;
+
+            for (i = 0; i < result.length; i++) {
+              food.push(result[i].foodtype);
+            }
+
+          case 10:
+            // const db = await connect();
+            // const result = await db.collection('restaurants').find({}).toArray();
+            // // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
+            // // console.log(jsonResult);
+            res.json(food);
+
+          case 11:
           case "end":
             return _context3.stop();
         }
@@ -282,7 +224,10 @@ function () {
 
           case 6:
             result = _context4.sent;
-            res.send('Restaurante agregado exitosamente');
+            res.json({
+              "operation": "successful",
+              "description": "Restaurante agregado exitosamente"
+            });
 
           case 8:
           case "end":
@@ -294,6 +239,98 @@ function () {
 
   return function (_x7, _x8) {
     return _ref4.apply(this, arguments);
+  };
+}()); // Editar
+
+router.put('/:id',
+/*#__PURE__*/
+function () {
+  var _ref5 = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee5(req, res) {
+    var id, db, restaurant, result;
+    return regeneratorRuntime.wrap(function _callee5$(_context5) {
+      while (1) {
+        switch (_context5.prev = _context5.next) {
+          case 0:
+            id = req.params.id;
+            _context5.next = 3;
+            return (0, _database.connect)();
+
+          case 3:
+            db = _context5.sent;
+            restaurant = {
+              name: req.body.name,
+              description: req.body.description,
+              location: req.body.location,
+              foodType: req.body.foodType,
+              contact: req.body.contact,
+              schedule: req.body.schedule
+            };
+            _context5.next = 7;
+            return db.collection("restaurants").updateOne({
+              _id: ObjectID(id)
+            }, restaurant);
+
+          case 7:
+            result = _context5.sent;
+            res.json({
+              "operation": "successful",
+              "description": "Restaurante editado exitosamente"
+            });
+
+          case 9:
+          case "end":
+            return _context5.stop();
+        }
+      }
+    }, _callee5);
+  }));
+
+  return function (_x9, _x10) {
+    return _ref5.apply(this, arguments);
+  };
+}()); // Editar
+
+router["delete"]('/:id',
+/*#__PURE__*/
+function () {
+  var _ref6 = _asyncToGenerator(
+  /*#__PURE__*/
+  regeneratorRuntime.mark(function _callee6(req, res) {
+    var id, db, result;
+    return regeneratorRuntime.wrap(function _callee6$(_context6) {
+      while (1) {
+        switch (_context6.prev = _context6.next) {
+          case 0:
+            id = req.params.id;
+            _context6.next = 3;
+            return (0, _database.connect)();
+
+          case 3:
+            db = _context6.sent;
+            _context6.next = 6;
+            return db.collection("restaurants").updateOne({
+              _id: ObjectID(id)
+            });
+
+          case 6:
+            result = _context6.sent;
+            res.json({
+              "operation": "successful",
+              "description": "Restaurante eliminado exitosamente"
+            });
+
+          case 8:
+          case "end":
+            return _context6.stop();
+        }
+      }
+    }, _callee6);
+  }));
+
+  return function (_x11, _x12) {
+    return _ref6.apply(this, arguments);
   };
 }()); // router.put('/:idProveedor/:idProducto', async (req, res) =>
 //     {

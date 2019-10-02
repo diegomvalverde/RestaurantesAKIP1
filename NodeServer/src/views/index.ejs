@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0">
+    <title>Inicio sesión</title>
+
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/login.css">
+
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script>
+      function admin(token)
+      {
+        console.log(token);
+        $.ajax
+        (
+          {
+            data:  {}, //lo que se va a enviar
+            url: "http://localhost:3000/",
+            type:  'get', //método de envio
+            headers: {'Authorization': 'token eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjp7ImVtYWlsIjoiZGllZ29tZW5kZXoxMkBnbWFpbC5jb20iLCJwYXNzd29yZCI6IjEyMyJ9LCJpYXQiOjE1Njk5Nzg4NDJ9.OMsGyDdNhV1kY4e2ffrcMkJYelfdl7TlL5HyPvvTCmA'},
+            success:  function (response)
+            { //procesado de la respuesta del .php
+              console.log(response);
+              window.open(response);
+              // $("#resultado").html(response);
+              // alert(response);
+              // console.log(response);
+              // if(response != "el usuario no existe")
+              // {
+              //   // admin(response.token);
+              // }
+            }
+          }
+        );
+      }
+    </script>
+    <script>
+      function consultar()
+      {
+        $.ajax
+        (
+          {
+            data:  {'navegador':'yes'}, //lo que se va a enviar
+            url: "http://localhost:3000/login/" + document.getElementById("usr").value + "/" +document.getElementById("pwd").value, // .php que recibe la petición
+            type:  'get', //método de envio
+            success:  function (response)
+            { //procesado de la respuesta del .php
+              $("#resultado").html(response);
+              // alert(response);
+              // console.log(response);
+              if(response != "el usuario no existe")
+              {
+                admin(response.token);
+              }
+            }
+          }
+        );
+      }
+    </script>
+
+  </head>
+
+  <body>
+      <div class="container-fluid bg-dark py-2">
+        <div class="container text-white">
+          <h2>Validación de credenciales</h2>
+          <p><%= title%></p>
+        </div>
+        <hr class="bg-white">
+      </div>
+
+      <form method="post" id="formulario">
+      <div class="container-fluid py-5 text-white">
+      <div class="container text-white">
+        <div class="row">
+          <div class="col-4">
+          </div>
+          <div class="col-3">
+            <label for="usr" align= "center">Usuario:</label>
+            <input type="text" class="form-control" name="usr" id="usr">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-4">
+          </div>
+          <div class="col-3">
+            <label for="usr">Contraseña:</label>
+            <input type="text" class="form-control" name="pwd" id="pwd">
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-3">
+          </div>
+          <div class="col-2">
+          </div>
+          <div class="col-3">
+            <br>
+            <button type="button" class="btn btn-primary" onclick="consultar();">Validar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    </div>
+    </form>
+    Resultado: <span id="resultado">0</span>
+  </body>
+</html>
