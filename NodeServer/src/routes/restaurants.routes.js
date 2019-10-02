@@ -8,6 +8,57 @@ import {connect} from "../database";
 // import {ObjectID} from "mongodb";
 
 const {ObjectID} = require("mongodb");
+// Consulta todos los restaurantes
+router.get('/:restaurantId', validateToken, async (req, res) => {
+  const {restaurantId} = req.params;
+  console.log(req.body);
+  jwt.verify(req.token, 'my_secret_token', async (err, data)=>
+  {
+    if (err)
+    {
+        res.sendStatus(403);
+    }
+    else {
+      const db = await connect();
+      // var restaurantsMongo = await db.collection('restaurants').findOne({_id: restaurantId});
+      const restaurantsMongo = await db.collection('restaurants').findOne({_id: ObjectID(restaurantId)});
+
+
+        const reviewsMongo = await db.collection('reviews').find({idRestaurant: ObjectID(restaurantId)}).toArray();
+        const imagesMongo = await db.collection('images').find({idRestaurant: ObjectID(restaurantId)}).toArray();
+
+        var images = [];
+        var reviews = [];
+
+        let scoreTotal = 0;
+
+            for (var i = 0; i < imagesMongo.length; i++) {
+              images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+            }
+
+            for (var i = 0; i < reviewsMongo.length; i++) {
+              reviews.push(reviewsMongo[i]);
+    		  scoreTotal += reviewsMongo[i].score;
+            }
+
+    		// float avgScore = scoreTotal/reviewsMongo.length;
+
+        restaurantsMongo.images = images;
+        restaurantsMongo.reviews = reviews;
+        restaurantsMongo.score = scoreTotal/reviewsMongo.length;
+
+      // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
+      // console.log(jsonResult);
+      res.json(restaurantsMongo);
+    }
+  });
+    // const {restaurantId} = req.params;
+
+
+
+}
+);
+
 
 // Consulta todos los restaurantes
 router.get('/', validateToken, async (req, res) => {
@@ -31,16 +82,22 @@ router.get('/', validateToken, async (req, res) => {
         var images = [];
         var reviews = [];
 
-        for (var i = 0; i < imagesMongo.length; i++) {
-          images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
-        }
+        let scoreTotal = 0;
 
-        for (var i = 0; i < reviewsMongo.length; i++) {
-          reviews.push(reviewsMongo[i]);
-        }
+            for (var i = 0; i < imagesMongo.length; i++) {
+              images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+            }
+
+            for (var i = 0; i < reviewsMongo.length; i++) {
+              reviews.push(reviewsMongo[i]);
+    		  scoreTotal += reviewsMongo[i].score;
+            }
+
+    		// flo
 
         restaurantsMongo[z].images = images;
         restaurantsMongo[z].reviews = reviews;
+        restaurantsMongo[z].score = scoreTotal/reviewsMongo.length;
 
       }
       // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
