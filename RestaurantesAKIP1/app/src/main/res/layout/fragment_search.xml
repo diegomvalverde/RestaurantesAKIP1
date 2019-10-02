@@ -32,7 +32,8 @@
         android:orientation="horizontal"
 
         android:paddingTop="10dp"
-        android:paddingBottom="10dp">
+        android:paddingBottom="10dp"
+        android:visibility="visible">
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -45,13 +46,13 @@
                 android:orientation="horizontal">
 
                 <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:paddingStart="10dp"
-                android:text="Tipo de comida"
-                android:textAlignment="center"
-                android:textSize="16sp" />
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:paddingStart="10dp"
+                    android:text="Tipo de comida"
+                    android:textAlignment="center"
+                    android:textSize="16sp" />
 
                 <Spinner
                     android:id="@+id/spin_foodType"
@@ -108,8 +109,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
                     android:ems="10"
-                    android:inputType="number"
                     android:focusable="false"
+                    android:inputType="number"
                     android:text="50" />
 
             </LinearLayout>
@@ -147,7 +148,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:visibility="gone">
+        android:visibility="visible"
+        tools:visibility="visible">
 
     </ListView>
 
@@ -155,7 +157,10 @@
         android:id="@+id/ll_mapContent"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:visibility="gone"
+        tools:visibility="gone">
+
         <fragment
             android:id="@+id/frag_mapResults"
             android:name="com.example.restaurantesakip1.Presentations.Fragments.MapResultsFragment"
