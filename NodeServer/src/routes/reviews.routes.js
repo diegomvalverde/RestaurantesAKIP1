@@ -1,105 +1,32 @@
 import {Router} from 'express';
 const router = Router();
-
-// bluebird.promisifyAll(redis);
-
-//Database connection
 import {connect} from "../database";
-
-// import {ObjectID} from "mongodb";
-
 const {ObjectID} = require("mongodb");
 
-
-// router.get('/', async (req, res) => {});
-
-
-// router.get('/', async (req, res) => {
-//     try {
-//         const db = await connect();
-//         const proveedores = await db.collection("proveedores").find({}, {proveedor: "", id: 0}).toArray();
-//         // console.log(proveedores);
-//         const products = [];
-//         for (let i = 0; i < proveedores.length; i++) {
-//             const prov = proveedores[i].proveedor;
-//             try {
-//
-//                 const pro = await db.collection("productos").find({proveedor: prov}).toArray();
-//                 // console.log(pro[0].proveedor);
-//                 const prod = {proveedor:prov, online:1, productos:pro[0].productos};
-//                 redisClient.set(pro[0].proveedor, JSON.stringify(prod));
-//                 products.push(prod);
-//
-//             }
-//             catch(e) {
-//                 // console.log(e)
-//                 if(await redisClient.exists(prov))
-//                 {
-//                     const jsonProductos = JSON.parse(await getAsync(prov));
-//                     // console.log(JSON.parse(productos));
-//                     const prod = {proveedor:prov, online:0, productos:jsonProductos.productos};
-//                     redisClient.set(prov, JSON.stringify(prod));
-//                     products.push(prod);
-//                 }
-//             }
-//         }
-//         // const result = await db.collection("productos").find({}).toArray();
-//         // console.log(proveedores[0].proveedor);
-//         // console.log(proveedores);
-//         res.json(products);
-//     }
-//     catch(e)
-//     {
-//
-//     }
-//     }
-//
-// );
-
-// Consulta un usuario por correo y email, evuelve un
-// true si lo encuentra y un false de lo contrario
-// router.get('/', async (req, res) => {
-//     const userEmail = req.body.email;
-//     const userPass = req.body.password;
-//
-//     const db = await connect();
-//     const result = await db.collection('users').findOne({email: userEmail, password: userPass});
-//     // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
-//     // console.log(jsonResult);
-//     res.json(result);
-//
-// }
-// );
-//
-
 // Agregar una review
-router.post('/:idRestaurant', async (req, res) =>
+router.post('/', async (req, res) =>
     {
-      const {idRestaurant} = req.params;
+      // const {idRestaurant} = req.params;
       const db = await connect();
       const review =
           {
-              idRestaurant: ObjectID(idRestaurant),
-              userId: req.body.userId,
+              restaurantId: ObjectID(req.body.restaurantId),
+              userId: ObjectID(req.body.userId),
               date: new Date().getDate(),
               score: req.body.score,
-              price: req.body.price,
-              comment: req.body.comment
+              price: req.body.price
           };
-      const result = await db.collection("reviews").insertOne(review);
+      const exists = await db.collection("reviews").findOne({restaurantId: review.restaurantId, userId: review.userId});
+      if (exists != null)
+      {
+          const result = await db.collection("reviews").updateOne({_id: exists._id}, {$set: review});
+      }
+      else
+      {
+          const result = await db.collection("reviews").insertOne(review);
+      }
       res.send('Reseña agregada exitosamente');
     }
 );
-
-// router.put('/:idProveedor/:idProducto', async (req, res) =>
-//     {
-//         const {idProveedor, idProducto} = req.params;
-//         const db = await connect();
-//         const result = await db.collection("productos").updateOne({_id: ObjectID(idProveedor), "productos.nombre" : idProducto}, {$inc: {"productos.$.inventario": -1}});
-//
-//         // console.log(result.ops[0]);
-//         res.send('Compra exitosa');
-//     }
-// );
 
 export default router;
