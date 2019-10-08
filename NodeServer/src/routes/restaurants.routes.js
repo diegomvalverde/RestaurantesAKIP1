@@ -98,9 +98,95 @@ router.get('/:restaurantId', validateToken, async (req, res) => {
 }
 );
 
-
-// Consulta todos los restaurantes
+// Obtener restaurantes sin filtro
 router.get('/', validateToken, async (req, res) => {
+    jwt.verify(req.token, 'my_secret_token', async (err, data)=>
+        {
+            if (err)
+            {
+                res.sendStatus(403);
+            }
+            else
+    {
+        const db = await connect();
+        var restaurantsMongo = await db.collection('restaurants').find({}).toArray();
+
+        for (var z = 0; z < restaurantsMongo.length; z++)
+        {
+            const restaurantId = restaurantsMongo[z]._id;
+
+            const reviewsMongo = await db.collection('reviews').find({restaurantId: ObjectID(restaurantId)}).toArray();
+            const imagesMongo = await db.collection('images').find({idRestaurant: ObjectID(restaurantId)}).toArray();
+            restaurantsMongo[z].comments = await db.collection('comments').find({restaurantId: ObjectID(restaurantId)}).toArray();
+            var images = [];
+            var reviews = [];
+
+            var scoreTotal = 0;
+            var lPrice = 0;
+            var mPrice = 0;
+            var hPrice = 0;
+
+            for (var i = 0; i < imagesMongo.length; i++) {
+                images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+            }
+
+            for (var i = 0; i < reviewsMongo.length; i++) {
+                reviews.push(reviewsMongo[i]);
+                scoreTotal += reviewsMongo[i].score;
+                if (reviewsMongo[i].price == "barato")
+                {
+                    lPrice ++;
+                }
+                else if (reviewsMongo[i].price == "regular")
+                {
+                    mPrice++;
+                }
+                else
+                {
+                    hPrice ++;
+                }
+            }
+
+            // flo
+
+            restaurantsMongo[z].images = images;
+            restaurantsMongo[z].reviews = reviews;
+            if (scoreTotal > 0)
+            {
+                restaurantsMongo[z].stars = scoreTotal/reviewsMongo.length;
+            }
+            else
+            {
+                restaurantsMongo[z].stars = 5;
+            }
+            if (lPrice > mPrice && lPrice > hPrice)
+            {
+                restaurantsMongo[z].price = "barato";
+            }
+            else if (hPrice > lPrice && hPrice > mPrice)
+            {
+                restaurantsMongo[z].price = "caro";
+            }
+            else
+            {
+                restaurantsMongo[z].price = "regular";
+            }
+
+
+        }
+    res.json(restaurantsMongo);
+}
+});
+// const {restaurantId} = req.params;
+
+
+
+}
+);
+
+
+// Consulta todos los restaurantes con filtro
+router.post('/filter/', validateToken, async (req, res) => {
   jwt.verify(req.token, 'my_secret_token', async (err, data)=>
   {
     if (err)
