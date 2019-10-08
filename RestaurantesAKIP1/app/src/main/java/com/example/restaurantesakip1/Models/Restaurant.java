@@ -73,8 +73,8 @@ public class Restaurant {
         this.imagesUrls.add("http://www.liveincostarica.com/blog/wp-content/uploads/2018/11/chifrijo-costa-rica-672x372.jpg");
 
         this.comments = new LinkedList<Comment>(){{
-            add(new Comment(0));
-            add(new Comment(1));
+            add(new Comment("0"));
+            add(new Comment("1"));
         }};
     }
 

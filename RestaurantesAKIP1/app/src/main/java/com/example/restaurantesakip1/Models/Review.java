@@ -3,7 +3,7 @@ package com.example.restaurantesakip1.Models;
 import java.util.Date;
 
 public class Review {
-    public int id;
+    public String _id;
     public int userId;
     public int restaurantId;
     public Date date;
