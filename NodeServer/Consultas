@@ -1,0 +1,17 @@
+Json para los filtros
+{
+	"name": "Comedor",
+	"stars": 5,
+	"price": "barato",
+	"foodType": "Helados",
+	"distance": [200, 9.00, 1.234]
+}
+
+Agregar reseña
+{
+	"restaurantId": "5d8e6ad4a3e5b3001705e08f",
+	"userId": "5d935b1cefbc7b1678032570",
+	"score": 5,
+	"price": "regular"
+}
+

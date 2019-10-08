@@ -19,9 +19,11 @@ var router = (0, _express.Router)();
 
 var path = require('path');
 
-// import {ObjectID} from "mongodb";
+//Database connection
 var _require = require("mongodb"),
-    ObjectID = _require.ObjectID; // Consulta todos los restaurantes
+    ObjectID = _require.ObjectID;
+
+var Distance = require("geo-distance"); // Consulta un restaurante por el id
 
 
 router.get('/:restaurantId', _server.validateToken,
@@ -36,7 +38,6 @@ function () {
         switch (_context2.prev = _context2.next) {
           case 0:
             restaurantId = req.params.restaurantId;
-            console.log(req.body);
 
             _server.jwt.verify(req.token, 'my_secret_token',
             /*#__PURE__*/
@@ -44,7 +45,7 @@ function () {
               var _ref2 = _asyncToGenerator(
               /*#__PURE__*/
               regeneratorRuntime.mark(function _callee(err, data) {
-                var db, restaurantsMongo, reviewsMongo, imagesMongo, images, reviews, scoreTotal, i;
+                var db, restaurantsMongo, reviewsMongo, imagesMongo, images, reviews, comments, scoreTotal, lPrice, mPrice, hPrice, i;
                 return regeneratorRuntime.wrap(function _callee$(_context) {
                   while (1) {
                     switch (_context.prev = _context.next) {
@@ -55,7 +56,7 @@ function () {
                         }
 
                         res.sendStatus(403);
-                        _context.next = 25;
+                        _context.next = 33;
                         break;
 
                       case 4:
@@ -73,7 +74,7 @@ function () {
                         restaurantsMongo = _context.sent;
                         _context.next = 12;
                         return db.collection('reviews').find({
-                          idRestaurant: ObjectID(restaurantId)
+                          restaurantId: ObjectID(restaurantId)
                         }).toArray();
 
                       case 12:
@@ -85,28 +86,66 @@ function () {
 
                       case 15:
                         imagesMongo = _context.sent;
+                        _context.next = 18;
+                        return db.collection('comments').find({
+                          restaurantId: ObjectID(restaurantId)
+                        }).toArray();
+
+                      case 18:
+                        restaurantsMongo.comments = _context.sent;
                         images = [];
                         reviews = [];
+                        comments = [];
                         scoreTotal = 0;
+                        lPrice = 0;
+                        mPrice = 0;
+                        hPrice = 0;
 
                         for (i = 0; i < imagesMongo.length; i++) {
                           images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
-                        }
+                        } // for (var i = 0; i < commentsMongo.length; i++) {
+                        //     comments.push(commentsMongo[i]);
+                        //
+                        // }
+
 
                         for (i = 0; i < reviewsMongo.length; i++) {
                           reviews.push(reviewsMongo[i]);
                           scoreTotal += reviewsMongo[i].score;
+
+                          if (reviewsMongo[i].price == "barato") {
+                            lPrice++;
+                          } else if (reviewsMongo[i].price == "regular") {
+                            mPrice++;
+                          } else {
+                            hPrice++;
+                          }
                         } // float avgScore = scoreTotal/reviewsMongo.length;
 
 
                         restaurantsMongo.images = images;
                         restaurantsMongo.reviews = reviews;
-                        restaurantsMongo.score = scoreTotal / reviewsMongo.length; // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
+
+                        if (scoreTotal > 0) {
+                          restaurantsMongo.stars = scoreTotal / reviewsMongo.length;
+                        } else {
+                          restaurantsMongo.stars = 5;
+                        } // restaurantsMongo.score = scoreTotal/reviewsMongo.length;
+
+
+                        if (lPrice > mPrice && lPrice > hPrice) {
+                          restaurantsMongo.price = "barato";
+                        } else if (hPrice > lPrice && hPrice > mPrice) {
+                          restaurantsMongo.price = "caro";
+                        } else {
+                          restaurantsMongo.price = "regular";
+                        } // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
                         // console.log(jsonResult);
+
 
                         res.json(restaurantsMongo);
 
-                      case 25:
+                      case 33:
                       case "end":
                         return _context.stop();
                     }
@@ -120,7 +159,7 @@ function () {
             }()); // const {restaurantId} = req.params;
 
 
-          case 3:
+          case 2:
           case "end":
             return _context2.stop();
         }
@@ -143,15 +182,13 @@ function () {
       while (1) {
         switch (_context4.prev = _context4.next) {
           case 0:
-            console.log(req.body);
-
             _server.jwt.verify(req.token, 'my_secret_token',
             /*#__PURE__*/
             function () {
               var _ref4 = _asyncToGenerator(
               /*#__PURE__*/
               regeneratorRuntime.mark(function _callee3(err, data) {
-                var db, restaurantsMongo, z, restaurantId, reviewsMongo, imagesMongo, images, reviews, scoreTotal, i;
+                var name, stars, price, foodType, distance, db, restaurantsMongo, z, restaurantId, reviewsMongo, imagesMongo, images, reviews, scoreTotal, lPrice, mPrice, hPrice, i, nombres, starsArray, foodTypes, distanceArray, from, to, pricesArray;
                 return regeneratorRuntime.wrap(function _callee3$(_context3) {
                   while (1) {
                     switch (_context3.prev = _context3.next) {
@@ -162,46 +199,62 @@ function () {
                         }
 
                         res.sendStatus(403);
-                        _context3.next = 31;
+                        _context3.next = 53;
                         break;
 
                       case 4:
-                        _context3.next = 6;
+                        // Constantes para hacer los filtros
+                        name = req.body.name;
+                        stars = req.body.stars;
+                        price = req.body.price;
+                        foodType = req.body.foodType;
+                        distance = req.body.distance;
+                        _context3.next = 11;
                         return (0, _database.connect)();
 
-                      case 6:
+                      case 11:
                         db = _context3.sent;
-                        _context3.next = 9;
+                        _context3.next = 14;
                         return db.collection('restaurants').find({}).toArray();
 
-                      case 9:
+                      case 14:
                         restaurantsMongo = _context3.sent;
                         z = 0;
 
-                      case 11:
+                      case 16:
                         if (!(z < restaurantsMongo.length)) {
-                          _context3.next = 30;
+                          _context3.next = 42;
                           break;
                         }
 
                         restaurantId = restaurantsMongo[z]._id;
-                        _context3.next = 15;
+                        _context3.next = 20;
                         return db.collection('reviews').find({
-                          idRestaurant: ObjectID(restaurantId)
+                          restaurantId: ObjectID(restaurantId)
                         }).toArray();
 
-                      case 15:
+                      case 20:
                         reviewsMongo = _context3.sent;
-                        _context3.next = 18;
+                        _context3.next = 23;
                         return db.collection('images').find({
                           idRestaurant: ObjectID(restaurantId)
                         }).toArray();
 
-                      case 18:
+                      case 23:
                         imagesMongo = _context3.sent;
+                        _context3.next = 26;
+                        return db.collection('comments').find({
+                          restaurantId: ObjectID(restaurantId)
+                        }).toArray();
+
+                      case 26:
+                        restaurantsMongo[z].comments = _context3.sent;
                         images = [];
                         reviews = [];
                         scoreTotal = 0;
+                        lPrice = 0;
+                        mPrice = 0;
+                        hPrice = 0;
 
                         for (i = 0; i < imagesMongo.length; i++) {
                           images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
@@ -210,24 +263,121 @@ function () {
                         for (i = 0; i < reviewsMongo.length; i++) {
                           reviews.push(reviewsMongo[i]);
                           scoreTotal += reviewsMongo[i].score;
+
+                          if (reviewsMongo[i].price == "barato") {
+                            lPrice++;
+                          } else if (reviewsMongo[i].price == "regular") {
+                            mPrice++;
+                          } else {
+                            hPrice++;
+                          }
                         } // flo
 
 
                         restaurantsMongo[z].images = images;
                         restaurantsMongo[z].reviews = reviews;
-                        restaurantsMongo[z].score = scoreTotal / reviewsMongo.length;
 
-                      case 27:
+                        if (scoreTotal > 0) {
+                          restaurantsMongo[z].stars = scoreTotal / reviewsMongo.length;
+                        } else {
+                          restaurantsMongo[z].stars = 5;
+                        }
+
+                        if (lPrice > mPrice && lPrice > hPrice) {
+                          restaurantsMongo[z].price = "barato";
+                        } else if (hPrice > lPrice && hPrice > mPrice) {
+                          restaurantsMongo[z].price = "caro";
+                        } else {
+                          restaurantsMongo[z].price = "regular";
+                        }
+
+                      case 39:
                         z++;
-                        _context3.next = 11;
+                        _context3.next = 16;
                         break;
 
-                      case 30:
-                        // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
-                        // console.log(jsonResult);
-                        res.json(restaurantsMongo);
+                      case 42:
+                        nombres = []; // Aplicar los filtros
 
-                      case 31:
+                        if (name != null) {
+                          for (i = 0; i < restaurantsMongo.length; i++) {
+                            // console.log(restaurantsMongo[i].name);
+                            if (restaurantsMongo[i].name.toLowerCase().includes(name.toLowerCase())) {
+                              // restaurantsMongo.splice(i, 1);
+                              nombres.push(restaurantsMongo[i]);
+                            }
+                          }
+                        } else {
+                          nombres = restaurantsMongo;
+                        }
+
+                        starsArray = [];
+
+                        if (stars != null) {
+                          for (i = 0; i < nombres.length; i++) {
+                            // console.log(restaurantsMongo[i].name);
+                            if (nombres[i].stars == stars) {
+                              // restaurantsMongo.splice(i, 1);
+                              starsArray.push(nombres[i]);
+                            }
+                          }
+                        } else {
+                          starsArray = nombres;
+                        }
+
+                        foodTypes = [];
+
+                        if (foodType != null) {
+                          for (i = 0; i < starsArray.length; i++) {
+                            // console.log(restaurantsMongo[i].name);
+                            if (starsArray[i].foodType.includes(foodType)) {
+                              // restaurantsMongo.splice(i, 1);
+                              foodTypes.push(starsArray[i]);
+                            }
+                          }
+                        } else {
+                          foodTypes = starsArray;
+                        }
+
+                        distanceArray = [];
+
+                        if (distance != null) {
+                          from = {
+                            lat: distance[1],
+                            lon: distance[2]
+                          };
+
+                          for (i = 0; i < foodTypes.length; i++) {
+                            to = {
+                              lat: foodTypes[i].location[0],
+                              lon: foodTypes[i].location[1]
+                            }; // console.log(Distance.between(from, to));
+
+                            if (Distance.between(from, to) <= Distance(distance[0] + ' km')) {
+                              // restaurantsMongo.splice(i, 1);
+                              distanceArray.push(starsArray[i]);
+                            }
+                          }
+                        } else {
+                          distanceArray = foodTypes;
+                        }
+
+                        pricesArray = [];
+
+                        if (price != null) {
+                          for (i = 0; i < distanceArray.length; i++) {
+                            if (distanceArray[i].price == price) {
+                              // restaurantsMongo.splice(i, 1);
+                              pricesArray.push(starsArray[i]);
+                            }
+                          }
+                        } else {
+                          pricesArray = distanceArray;
+                        }
+
+                        res.json(pricesArray);
+
+                      case 53:
                       case "end":
                         return _context3.stop();
                     }
@@ -241,7 +391,7 @@ function () {
             }()); // const {restaurantId} = req.params;
 
 
-          case 2:
+          case 1:
           case "end":
             return _context4.stop();
         }

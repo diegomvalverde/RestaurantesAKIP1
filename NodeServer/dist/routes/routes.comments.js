@@ -25,8 +25,7 @@ function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee(req, res) {
-    var db, review, exists, result, _result;
-
+    var db, comment, result;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -36,50 +35,20 @@ function () {
 
           case 2:
             db = _context.sent;
-            review = {
+            comment = {
               restaurantId: ObjectID(req.body.restaurantId),
               userId: ObjectID(req.body.userId),
               date: new Date().getDate(),
-              score: req.body.score,
-              price: req.body.price
+              comment: req.body.score
             };
             _context.next = 6;
-            return db.collection("reviews").findOne({
-              restaurantId: review.restaurantId,
-              userId: review.userId
-            });
+            return db.collection("comments").insertOne(comment);
 
           case 6:
-            exists = _context.sent;
-
-            if (!(exists != null)) {
-              _context.next = 13;
-              break;
-            }
-
-            _context.next = 10;
-            return db.collection("reviews").updateOne({
-              _id: exists._id
-            }, {
-              $set: review
-            });
-
-          case 10:
             result = _context.sent;
-            _context.next = 16;
-            break;
-
-          case 13:
-            _context.next = 15;
-            return db.collection("reviews").insertOne(review);
-
-          case 15:
-            _result = _context.sent;
-
-          case 16:
             res.send('Reseña agregada exitosamente');
 
-          case 17:
+          case 8:
           case "end":
             return _context.stop();
         }
