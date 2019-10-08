@@ -6,6 +6,34 @@ import {connect} from "../database"; //Database connection
 const {ObjectID} = require("mongodb");
 const Distance = require("geo-distance");
 
+
+// Consulta todos los restaurantes
+router.get('/foodtypes', validateToken, async (req, res) => {
+    jwt.verify(req.token, 'my_secret_token', async (err, data)=>
+        {
+            if(err)
+            {
+                res.sendStatus(403);
+            }
+            else
+{
+    // const {foodtypes} = req.params;
+    var food = [];
+
+    const db = await connect();
+    const result = await db.collection('foodtypes').find({}).toArray();
+
+    for (var i = 0; i < result.length; i++)
+    {
+        food.push(result[i].foodtype);
+    }
+    res.json(food);
+}
+
+});
+}
+);
+
 // Consulta un restaurante por el id
 router.get('/:restaurantId', validateToken, async (req, res) => {
   const {restaurantId} = req.params;
@@ -46,11 +74,11 @@ router.get('/:restaurantId', validateToken, async (req, res) => {
         for (var i = 0; i < reviewsMongo.length; i++) {
           reviews.push(reviewsMongo[i]);
           scoreTotal += reviewsMongo[i].score;
-            if (reviewsMongo[i].price == "barato")
+            if (reviewsMongo[i].price == "Barato")
             {
                 lPrice ++;
             }
-            else if (reviewsMongo[i].price == "regular")
+            else if (reviewsMongo[i].price == "Regular")
             {
                 mPrice++;
             }
@@ -75,15 +103,15 @@ router.get('/:restaurantId', validateToken, async (req, res) => {
         // restaurantsMongo.score = scoreTotal/reviewsMongo.length;
         if (lPrice > mPrice && lPrice > hPrice)
         {
-            restaurantsMongo.price = "barato";
+            restaurantsMongo.price = "Barato";
         }
         else if (hPrice > lPrice && hPrice > mPrice)
         {
-            restaurantsMongo.price = "caro";
+            restaurantsMongo.price = "Caro";
         }
         else
         {
-            restaurantsMongo.price = "regular";
+            restaurantsMongo.price = "Regular";
         }
 
       // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
@@ -133,11 +161,11 @@ router.get('/', validateToken, async (req, res) => {
             for (var i = 0; i < reviewsMongo.length; i++) {
                 reviews.push(reviewsMongo[i]);
                 scoreTotal += reviewsMongo[i].score;
-                if (reviewsMongo[i].price == "barato")
+                if (reviewsMongo[i].price == "Barato")
                 {
                     lPrice ++;
                 }
-                else if (reviewsMongo[i].price == "regular")
+                else if (reviewsMongo[i].price == "Regular")
                 {
                     mPrice++;
                 }
@@ -161,15 +189,15 @@ router.get('/', validateToken, async (req, res) => {
             }
             if (lPrice > mPrice && lPrice > hPrice)
             {
-                restaurantsMongo[z].price = "barato";
+                restaurantsMongo[z].price = "Barato";
             }
             else if (hPrice > lPrice && hPrice > mPrice)
             {
-                restaurantsMongo[z].price = "caro";
+                restaurantsMongo[z].price = "Caro";
             }
             else
             {
-                restaurantsMongo[z].price = "regular";
+                restaurantsMongo[z].price = "Regular";
             }
 
 
@@ -227,11 +255,11 @@ router.post('/filter/', validateToken, async (req, res) => {
             for (var i = 0; i < reviewsMongo.length; i++) {
               reviews.push(reviewsMongo[i]);
               scoreTotal += reviewsMongo[i].score;
-              if (reviewsMongo[i].price == "barato")
+              if (reviewsMongo[i].price == "Barato")
               {
                   lPrice ++;
               }
-              else if (reviewsMongo[i].price == "regular")
+              else if (reviewsMongo[i].price == "Regular")
               {
                   mPrice++;
               }
@@ -255,15 +283,15 @@ router.post('/filter/', validateToken, async (req, res) => {
             }
             if (lPrice > mPrice && lPrice > hPrice)
             {
-                restaurantsMongo[z].price = "barato";
+                restaurantsMongo[z].price = "Barato";
             }
             else if (hPrice > lPrice && hPrice > mPrice)
             {
-                restaurantsMongo[z].price = "caro";
+                restaurantsMongo[z].price = "Caro";
             }
             else
             {
-                restaurantsMongo[z].price = "regular";
+                restaurantsMongo[z].price = "Regular";
             }
 
 
@@ -380,32 +408,9 @@ router.post('/filter/', validateToken, async (req, res) => {
 );
 
 
-// Consulta todos los restaurantes
-router.get('/:foodtypes', async (req, res) => {
-  const {foodtypes} = req.params;
-  var food = [];
-  if (foodtypes == "types")
-  {
-    const db = await connect();
-    const result = await db.collection('foodtypes').find({}).toArray();
-
-    for (var i = 0; i < result.length; i++)
-    {
-      food.push(result[i].foodtype);
-    }
-  }
-    // const db = await connect();
-    // const result = await db.collection('restaurants').find({}).toArray();
-    // // const jsonResult = {proveedor:result[0].proveedor, online:1, productos:result[0].productos};
-    // // console.log(jsonResult);
-    res.json(food);
-}
-);
-
-
 
 // Agregar un restaurantes
-router.post('/', async (req, res) =>
+router.post('/', validateToken, async (req, res) =>
     {
         const db = await connect();
         const restaurant =
@@ -424,46 +429,57 @@ router.post('/', async (req, res) =>
 );
 
 // Editar
-router.put('/:id', async (req, res) =>
+router.put('/:id', validateToken, async (req, res) =>
     {
-      const {id} = req.params;
-        const db = await connect();
-        const restaurant =
+        jwt.verify(req.token, 'my_secret_token', async (err, data)=>
             {
-                name: req.body.name,
-                description: req.body.description,
-                location: req.body.location,
-                foodType: req.body.foodType,
-                contact: req.body.contact,
-                schedule: req.body.schedule
-            };
+                if (err)
+                {
+                    res.sendStatus(403);
+                }
+                else
+{
+    const {id} = req.params;
+    const db = await
+    connect();
+    const restaurant =
+        {
+            name: req.body.name,
+            description: req.body.description,
+            location: req.body.location,
+            foodType: req.body.foodType,
+            contact: req.body.contact,
+            schedule: req.body.schedule
+        };
 
-        const result = await db.collection("restaurants").updateOne({_id: ObjectID(id)},restaurant);
-        res.json({"operation":"successful", "description": "Restaurante editado exitosamente"});
+    const result = await
+    db.collection("restaurants").updateOne({_id: ObjectID(id)}, restaurant);
+    res.json({"operation": "successful", "description": "Restaurante editado exitosamente"});
+}});
     }
 );
 
 
 // Editar
-router.delete('/:id', async (req, res) =>
+router.delete('/:id', validateToken, async (req, res) =>
     {
-      const {id} = req.params;
-        const db = await connect();
+        jwt.verify(req.token, 'my_secret_token', async (err, data)=>
+            {
+                if(err) {
+                    res.sendStatus(403);
+                }
+                else
+{
+    const {id} = req.params;
+    const db = await
+    connect();
 
-        const result = await db.collection("restaurants").updateOne({_id: ObjectID(id)});
-        res.json({"operation":"successful", "description": "Restaurante eliminado exitosamente"});
+    const result = await
+    db.collection("restaurants").updateOne({_id: ObjectID(id)});
+    res.json({"operation": "successful", "description": "Restaurante eliminado exitosamente"});
+}
+});
     }
 );
-
-// router.put('/:idProveedor/:idProducto', async (req, res) =>
-//     {
-//         const {idProveedor, idProducto} = req.params;
-//         const db = await connect();
-//         const result = await db.collection("productos").updateOne({_id: ObjectID(idProveedor), "productos.nombre" : idProducto}, {$inc: {"productos.$.inventario": -1}});
-//
-//         // console.log(result.ops[0]);
-//         res.send('Compra exitosa');
-//     }
-// );
 
 export default router;
