@@ -149,14 +149,26 @@ function () {
 
           case 10:
             _result = _context2.sent;
-            res.send('Usuario agregado exitosamente');
+            res.json({
+              "operation": "sucessful",
+              "description": "Se ha creado el usuario"
+            });
             _context2.next = 15;
             break;
 
           case 14:
-            res.send("El usuario ya existe, el correo ya está en uso");
+            res.json({
+              "operation": "failure",
+              "description": "El correo ya existe"
+            });
 
           case 15:
+            res.json({
+              "operation": "failure",
+              "description": "El correo ya existe"
+            });
+
+          case 16:
           case "end":
             return _context2.stop();
         }

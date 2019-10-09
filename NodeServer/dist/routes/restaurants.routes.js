@@ -178,7 +178,7 @@ function () {
                         hPrice = 0;
 
                         for (i = 0; i < imagesMongo.length; i++) {
-                          images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+                          images.push(path.join('https://restaurantsakip1.herokuapp.com/' + imagesMongo[i].imageDir));
                         } // for (var i = 0; i < commentsMongo.length; i++) {
                         //     comments.push(commentsMongo[i]);
                         //
@@ -327,7 +327,7 @@ function () {
                         hPrice = 0;
 
                         for (i = 0; i < imagesMongo.length; i++) {
-                          images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+                          images.push(path.join('https://restaurantsakip1.herokuapp.com/' + imagesMongo[i].imageDir));
                         }
 
                         for (i = 0; i < reviewsMongo.length; i++) {
@@ -481,7 +481,7 @@ function () {
                         hPrice = 0;
 
                         for (i = 0; i < imagesMongo.length; i++) {
-                          images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+                          images.push(path.join('https://restaurantsakip1.herokuapp.com/' + imagesMongo[i].imageDir));
                         }
 
                         for (i = 0; i < reviewsMongo.length; i++) {

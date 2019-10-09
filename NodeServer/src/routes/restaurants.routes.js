@@ -64,7 +64,7 @@ router.get('/:restaurantId', validateToken, async (req, res) => {
 
 
         for (var i = 0; i < imagesMongo.length; i++) {
-          images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+          images.push(path.join('https://restaurantsakip1.herokuapp.com/' + imagesMongo[i].imageDir));
         }
         // for (var i = 0; i < commentsMongo.length; i++) {
         //     comments.push(commentsMongo[i]);
@@ -155,7 +155,7 @@ router.get('/', validateToken, async (req, res) => {
             var hPrice = 0;
 
             for (var i = 0; i < imagesMongo.length; i++) {
-                images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+                images.push(path.join('https://restaurantsakip1.herokuapp.com/' + imagesMongo[i].imageDir));
             }
 
             for (var i = 0; i < reviewsMongo.length; i++) {
@@ -249,7 +249,7 @@ router.post('/filter/', validateToken, async (req, res) => {
             var hPrice = 0;
 
             for (var i = 0; i < imagesMongo.length; i++) {
-              images.push(path.join('http://localhost:3000/' + imagesMongo[i].imageDir));
+              images.push(path.join('https://restaurantsakip1.herokuapp.com/' + imagesMongo[i].imageDir));
             }
 
             for (var i = 0; i < reviewsMongo.length; i++) {
