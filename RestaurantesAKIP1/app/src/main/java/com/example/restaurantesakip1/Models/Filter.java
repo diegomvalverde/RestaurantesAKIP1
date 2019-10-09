@@ -8,18 +8,18 @@ import java.util.List;
 
 public class Filter {
     @SerializedName("name")
-    String name = "";
+    public String name = "";
 
     @SerializedName("stars")
-    int stars = -1;
+    public int stars = -1;
 
     @SerializedName("price")
-    String price = "";
+    public String price = "";
 
-    @SerializedName("foodTypes")
-    String foodType = "";
+    @SerializedName("foodType")
+    public String foodType = "";
 
     @SerializedName("distance")
-    List<Double> distance  = new ArrayList<>();;
+    public List<Double> distance  = new ArrayList<>();;
 
 }

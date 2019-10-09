@@ -1,6 +1,11 @@
 package com.example.restaurantesakip1.Presentations.Fragments;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -12,6 +17,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 
@@ -30,6 +36,7 @@ import com.example.restaurantesakip1.R;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -44,6 +51,7 @@ public class SearchFragment extends Fragment {
     public ArrayAdapter<Restaurant> searchAdapter;
     public EditText searchBar;
     public View myView;
+    public Double latitude, longitude;
     public boolean resultsInList;
 
 
@@ -51,7 +59,7 @@ public class SearchFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public void showResults(List<Restaurant> restaurants){
+    public void showResults(List<Restaurant> restaurants) {
         //List results
         System.out.println(restaurants.size());
         this.restaurantsResults = restaurants;
@@ -61,13 +69,13 @@ public class SearchFragment extends Fragment {
 
         //Map results
         MapResultsFragment fragMap = (MapResultsFragment) getChildFragmentManager().findFragmentById(R.id.frag_mapResults);
-        if (fragMap == null){
+        if (fragMap == null) {
             System.out.println("Here we got an error");
         } else
             fragMap.pinPointRestaurants(restaurants);
     }
 
-    public void showMoreInfo(Restaurant restaurant){
+    public void showMoreInfo(Restaurant restaurant) {
         //System.out.println(restaurant.name);
         TableRow tRow = myView.findViewById(R.id.table_seeMoreInfo);
         tRow.setVisibility(View.VISIBLE);
@@ -79,32 +87,31 @@ public class SearchFragment extends Fragment {
 
 
         Button seeMore = myView.findViewById(R.id.btn_seeMoreMarker);
-        seeMore.setOnClickListener( (v) -> openDetailedInfo(restaurant) );
+        seeMore.setOnClickListener((v) -> openDetailedInfo(restaurant));
     }
 
 
-
-    public void openDetailedInfo(Restaurant restaurant){
+    public void openDetailedInfo(Restaurant restaurant) {
         Intent intent = new Intent(this.getContext(), DetailedRestActivity.class);
         intent.putExtra("RESTAURANT_ID", restaurant._id);
         this.startActivity(intent);
     }
 
-    public void setupSpinners(){
+    public void setupSpinners() {
 
     }
 
-    public void toggleView(String tag){
+    public void toggleView(String tag) {
         TableRow tRow = myView.findViewById(R.id.table_seeMoreInfo);
         ListView listView = myView.findViewById(R.id.lv_searchResults);
         LinearLayout mapContent = myView.findViewById(R.id.ll_mapContent);
 
 
-        if (tag.equals("Map")){
+        if (tag.equals("Map")) {
             listView.setVisibility(View.GONE);
             mapContent.setVisibility(View.VISIBLE);
             //Show map
-        } else if (tag.equals("List")){
+        } else if (tag.equals("List")) {
             //Show list
             listView.setVisibility(View.VISIBLE);
             tRow.setVisibility(View.GONE);
@@ -135,13 +142,35 @@ public class SearchFragment extends Fragment {
         this.restaurantsResults = new ArrayList<>();
         this.searchAdapter = new SearchAdapter(this.getContext(), this.restaurantsResults);
         this.lv_search.setAdapter(this.searchAdapter);
-        this.lv_search.setOnItemClickListener( (adapterView, view, i, l) -> openDetailedInfo(restaurantsResults.get(i)));
+        this.lv_search.setOnItemClickListener((adapterView, view, i, l) -> openDetailedInfo(restaurantsResults.get(i)));
 
         ImageButton listView = myView.findViewById(R.id.btn_viewList);
         ImageButton mapView = myView.findViewById(R.id.btn_viewMap);
 
-        listView.setOnClickListener( v -> toggleView("List") );
-        mapView.setOnClickListener( v -> toggleView("Map") );
+        listView.setOnClickListener(v -> toggleView("List"));
+        mapView.setOnClickListener(v -> toggleView("Map"));
+
+        LocationManager locManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+
+        boolean network_enabled = locManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        Location location = null;
+
+        if (network_enabled) {
+
+            //location = locManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+            try {
+                location = locManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            } catch (SecurityException e) {
+                //dialogGPS(this.getContext()); // lets the user know there is a problem with the gps
+            }
+
+            if(location!=null){
+                longitude = location.getLongitude();
+                latitude = location.getLatitude();
+            }
+        }
 
         return myView;
     }
@@ -149,7 +178,7 @@ public class SearchFragment extends Fragment {
 
     public void performSearch(){
         RestaurantService service = RetrofitClient.getRetrofitInstance().create(RestaurantService.class);
-        Filter f = new Filter();
+        Filter f = filterThings();
         Call<List<Restaurant>> call = service.filterRestaurants("Bearer " + Session.getInstace().token, f);
 
        // Call<List<Restaurant>> call = service.getAllRestaurants("Bearer " + Session.getInstace().token);
@@ -178,8 +207,29 @@ public class SearchFragment extends Fragment {
         });
     }
 
-    public String filterThings(){
-        return "";
+    public Filter filterThings(){
+        Filter f = new Filter();
+        Spinner foodType = myView.findViewById(R.id.spin_foodType);
+        Spinner score =  myView.findViewById(R.id.spin_filterScore);
+        Spinner price =  myView.findViewById(R.id.spin_price);
+
+        String foodTStr = foodType.getSelectedItem().toString();
+        String scoreStr = score.getSelectedItem().toString();
+        String priceStr = price.getSelectedItem().toString();
+
+        if (!foodTStr.equals("Cualquiera")){
+            f.foodType = foodTStr;
+        }
+
+        if (!scoreStr.equals("Cualquiera")){
+            f.stars = Integer.parseInt(scoreStr);
+        }
+
+        if (!priceStr.equals("Cualquiera")){
+            f.price = priceStr;
+        }
+
+        return f;
     }
 
 }

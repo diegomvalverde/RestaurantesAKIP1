@@ -6,7 +6,7 @@
     <string-array name="prices_filter">
         <item>Cualquiera</item>
         <item>Barato</item>
-        <item>Medio</item>
+        <item>Regular</item>
         <item>Caro</item>
     </string-array>
 
@@ -24,6 +24,7 @@
         <item>Americana</item>
         <item>Rapida</item>
         <item>Tipica</item>
+        <item>Tiquician</item>
         <item>Asiatica</item>
         <item>Fina</item>
         <item>Variada</item>
@@ -46,13 +47,12 @@
     </string-array>
 
     <string-array name="typeFood_add">
-        <item>Sin especificar</item>
+        <item>Variada</item>
         <item>Americana</item>
         <item>Rapida</item>
         <item>Tipica</item>
         <item>Asiatica</item>
         <item>Fina</item>
-        <item>Variada</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->
