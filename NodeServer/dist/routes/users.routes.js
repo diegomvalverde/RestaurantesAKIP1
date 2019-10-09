@@ -163,12 +163,6 @@ function () {
             });
 
           case 15:
-            res.json({
-              "operation": "failure",
-              "description": "El correo ya existe"
-            });
-
-          case 16:
           case "end":
             return _context2.stop();
         }

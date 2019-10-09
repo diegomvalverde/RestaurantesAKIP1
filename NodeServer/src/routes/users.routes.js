@@ -92,7 +92,7 @@ router.post('/', async (req, res) =>
         } else {
           res.json({"operation":"failure", "description":"El correo ya existe"});
         }
-        res.json({"operation":"failure", "description":"El correo ya existe"});
+        // res.json({"operation":"failure", "description":"El correo ya existe"});
     }
 );
 

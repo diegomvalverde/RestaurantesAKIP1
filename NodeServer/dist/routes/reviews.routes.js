@@ -53,7 +53,7 @@ function () {
             exists = _context.sent;
 
             if (!(exists != null)) {
-              _context.next = 13;
+              _context.next = 14;
               break;
             }
 
@@ -66,20 +66,25 @@ function () {
 
           case 10:
             result = _context.sent;
-            _context.next = 16;
+            res.json({
+              "operation": "sucessful",
+              "description": "Review actualizada correctamente"
+            });
+            _context.next = 18;
             break;
 
-          case 13:
-            _context.next = 15;
+          case 14:
+            _context.next = 16;
             return db.collection("reviews").insertOne(review);
 
-          case 15:
-            _result = _context.sent;
-
           case 16:
-            res.send('Reseña agregada exitosamente');
+            _result = _context.sent;
+            res.json({
+              "operation": "sucessful",
+              "description": "Review agregada correctamente"
+            });
 
-          case 17:
+          case 18:
           case "end":
             return _context.stop();
         }

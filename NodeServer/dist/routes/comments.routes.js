@@ -9,6 +9,8 @@ var _express = require("express");
 
 var _database = require("../database");
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -35,18 +37,21 @@ function () {
 
           case 2:
             db = _context.sent;
-            comment = {
+            comment = _defineProperty({
               restaurantId: ObjectID(req.body.restaurantId),
               userId: ObjectID(req.body.userId),
               date: new Date().getDate(),
-              comment: req.body.score
-            };
+              comment: req.body.comment
+            }, "date", req.body.date);
             _context.next = 6;
             return db.collection("comments").insertOne(comment);
 
           case 6:
             result = _context.sent;
-            res.send('Reseña agregada exitosamente');
+            res.json({
+              "operation": "sucessful",
+              "description": "Comentario agregado correctamente"
+            });
 
           case 8:
           case "end":

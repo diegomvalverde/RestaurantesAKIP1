@@ -13,11 +13,12 @@ router.post('/', async (req, res) =>
             restaurantId: ObjectID(req.body.restaurantId),
             userId: ObjectID(req.body.userId),
             date: new Date().getDate(),
-            comment: req.body.score,
+            comment: req.body.comment,
+            date: req.body.date
         };
 
     const result = await db.collection("comments").insertOne(comment);
-    res.send('Reseña agregada exitosamente');
+    res.json({"operation":"sucessful", "description":"Comentario agregado correctamente"});
     }
     );
 

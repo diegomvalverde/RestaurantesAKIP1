@@ -20,12 +20,14 @@ router.post('/', async (req, res) =>
       if (exists != null)
       {
           const result = await db.collection("reviews").updateOne({_id: exists._id}, {$set: review});
+          res.json({"operation":"sucessful", "description":"Review actualizada correctamente"});
       }
       else
       {
           const result = await db.collection("reviews").insertOne(review);
+          res.json({"operation":"sucessful", "description":"Review agregada correctamente"});
       }
-      res.send('Reseña agregada exitosamente');
+
     }
 );
 
