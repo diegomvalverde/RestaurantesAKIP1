@@ -3,14 +3,14 @@
     <string name="facebook_app_id">1098329053706025</string>
     <string name="fb_login_protocol_scheme">fb1098329053706025</string>
 
-    <string-array name="prices_array">
+    <string-array name="prices_filter">
         <item>Cualquiera</item>
         <item>Barato</item>
         <item>Medio</item>
         <item>Caro</item>
     </string-array>
 
-    <string-array name="score_array">
+    <string-array name="score_filter">
         <item>Cualquiera</item>
         <item>1</item>
         <item>2</item>
@@ -19,10 +19,20 @@
         <item>5</item>
     </string-array>
 
+    <string-array name="typeFood_filter">
+        <item>Cualquiera</item>
+        <item>Americana</item>
+        <item>Rapida</item>
+        <item>Tipica</item>
+        <item>Asiatica</item>
+        <item>Fina</item>
+        <item>Variada</item>
+    </string-array>
+
     <string-array name="prices_opinion">
         <item>NA</item>
         <item>Barato</item>
-        <item>Medio</item>
+        <item>Regular</item>
         <item>Caro</item>
     </string-array>
 
@@ -35,13 +45,14 @@
         <item>5</item>
     </string-array>
 
-    <string-array name="typeFood_array">
-        <item>Cualquiera</item>
+    <string-array name="typeFood_add">
+        <item>Sin especificar</item>
         <item>Americana</item>
         <item>Rapida</item>
         <item>Tipica</item>
         <item>Asiatica</item>
         <item>Fina</item>
+        <item>Variada</item>
     </string-array>
 
     <!-- TODO: Remove or change this placeholder text -->

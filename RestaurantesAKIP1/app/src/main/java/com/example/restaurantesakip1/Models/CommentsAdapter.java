@@ -33,9 +33,12 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
 
         if (comment != null) {
-            txtUsername.setText( comment.userId );
-            txtDate.setText(comment.date.toString());
-            txtBody.setText(comment.body);
+            String name = Session.getInstace().user.name;
+            String lastname = Session.getInstace().user.lastName1;
+
+            txtUsername.setText( name + " " + lastname );
+            txtDate.setText(comment.date);
+            txtBody.setText(comment.comment);
         } else {
             System.out.println(position);
         }

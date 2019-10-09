@@ -7,6 +7,7 @@ import com.example.restaurantesakip1.Models.User;
 
 import org.json.JSONObject;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -19,7 +20,7 @@ public interface UserService {
     Call< User > getUser(@Path("email") String email, @Path("pass") String pass);
 
     @POST("/users")
-    Call<JSONObject> saveUser(@Body User body);
+    Call<ResponseBody> saveUser(@Body User body);
 
     //@GET("/login/{email}/{pass}")
     //Call<User> getUser();

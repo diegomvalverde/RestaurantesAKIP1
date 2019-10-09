@@ -101,12 +101,23 @@
             android:layout_width="match_parent"
             android:layout_height="200dp" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Tipos de comida"
-            android:textColor="@color/browser_actions_text_color"
-            android:textSize="18sp" />
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tipos de comida"
+                android:textColor="@color/browser_actions_text_color"
+                android:textSize="18sp" />
+
+            <Spinner
+                android:id="@+id/spin_foodType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:entries="@array/typeFood_add" />
+        </TableRow>
 
         <HorizontalScrollView
             android:layout_width="match_parent"

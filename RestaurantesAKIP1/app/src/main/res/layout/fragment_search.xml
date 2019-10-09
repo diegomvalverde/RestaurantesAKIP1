@@ -59,7 +59,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:entries="@array/typeFood_array" />
+                    android:entries="@array/typeFood_filter" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -75,7 +75,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:entries="@array/score_array"
+                    android:entries="@array/score_filter"
                     android:spinnerMode="dropdown" />
 
                 <TextView
@@ -92,7 +92,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="0"
-                    android:entries="@array/prices_array" />
+                    android:entries="@array/prices_filter" />
 
                 <TextView
                     android:layout_width="wrap_content"

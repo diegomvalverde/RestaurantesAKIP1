@@ -93,8 +93,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void acceptSingIn(){
-        String email = "diegomendez12@gmail.com";
-        String pass = "123";
+        String email = "invitado@correo.com";
+        String pass = "pass";
         blockLayout.setVisibility(View.VISIBLE);
 
 

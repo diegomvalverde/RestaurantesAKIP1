@@ -7,6 +7,7 @@ import org.json.JSONObject;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -20,13 +21,13 @@ public interface RestaurantService {
     Call<List<Restaurant>> getAllRestaurants( @Header("Authorization") String authHeader);
 
     @POST("/restaurants")
-    Call<JSONObject> saveRestaurant(@Header("Authorization") String authHeader, @Body Restaurant body);
+    Call<ResponseBody> saveRestaurant(@Header("Authorization") String authHeader, @Body Restaurant body);
 
     @GET("/restaurants/{id}")
     Call<Restaurant> getRestaurant(@Header("Authorization") String authHeader, @Path("id") String id);
 
-    //@GET("/")
-    @HTTP(method = "GET", path = "/restaurants", hasBody = true)
+    @POST("/restaurants/filter/")
+    //@HTTP(method = "GET", path = "/restaurants", hasBody = true)
     Call<List<Restaurant>> filterRestaurants(@Header("Authorization") String authHeader, @Body Filter body);
 
 }

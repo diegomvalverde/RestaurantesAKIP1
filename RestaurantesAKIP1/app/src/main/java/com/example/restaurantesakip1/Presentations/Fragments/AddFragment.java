@@ -11,9 +11,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Space;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.restaurantesakip1.Data.RestaurantService;
 import com.example.restaurantesakip1.Data.RetrofitClient;
@@ -22,13 +24,16 @@ import com.example.restaurantesakip1.Models.Session;
 import com.example.restaurantesakip1.R;
 import com.google.android.gms.maps.GoogleMap;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -94,27 +99,25 @@ public class AddFragment extends Fragment {
         String name = ((EditText) myView.findViewById(R.id.tbox_addName)).getText().toString();
         int errors = 0;
         if (name.equals("")){
-            System.out.println("Debe de ingresar un nombre.");
+            Toast.makeText(getContext(), "Debe de ingresar un nombre." , Toast.LENGTH_SHORT ).show();
             errors++;
         }
 
         String number = ((EditText) myView.findViewById(R.id.tbox_addContact)).getText().toString();
-
         if (number.equals("")){
-            System.out.println("Debe de ingresar un contacto.");
+            Toast.makeText(getContext(), "Debe de ingresar un contacto." , Toast.LENGTH_SHORT ).show();
             errors++;
         }
 
         String address = ((EditText) myView.findViewById(R.id.tbox_addAddress)).getText().toString();
-
         if (address.equals("")){
-            System.out.println("Debe de ingresar una dirección.");
+            Toast.makeText(getContext(), "Debe de ingresar una dirección." , Toast.LENGTH_SHORT ).show();
             errors++;
         }
 
         LocateFragment fragMap = (LocateFragment) getChildFragmentManager().findFragmentById(R.id.frag_locateRestaurant);
         if (fragMap == null || fragMap.point == null){
-            System.out.println("Debe de ingresar una dirección.");
+            Toast.makeText(getContext(), "Debe de ingresar una dirección." , Toast.LENGTH_SHORT ).show();
             errors++;
         }
 
@@ -131,6 +134,7 @@ public class AddFragment extends Fragment {
         String name = ((EditText) myView.findViewById(R.id.tbox_addName)).getText().toString();
         String number = ((EditText) myView.findViewById(R.id.tbox_addContact)).getText().toString();
         String address = ((EditText) myView.findViewById(R.id.tbox_addAddress)).getText().toString();
+        String foodType = ((Spinner) myView.findViewById(R.id.spin_foodType)).getPrompt().toString();
         LocateFragment fragMap = (LocateFragment) getChildFragmentManager().findFragmentById(R.id.frag_locateRestaurant);
         List<Double> location = new ArrayList<>();
         location.add(fragMap.point.latitude);
@@ -149,27 +153,48 @@ public class AddFragment extends Fragment {
         Restaurant restaurant = new Restaurant(0, name);
         restaurant.contact = number;
         restaurant.address = address;
+        restaurant.foodTypes = foodType;
         restaurant.schedule = schedule;
         restaurant.location = location;
 
         RestaurantService service = RetrofitClient.getRetrofitInstance().create(RestaurantService.class);
-        Call<JSONObject> call = service.saveRestaurant("Bearer " + Session.getInstace().token, restaurant);
+        Call<ResponseBody> call = service.saveRestaurant("Bearer " + Session.getInstace().token, restaurant);
 
-        call.enqueue(new Callback<JSONObject>() {
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-                System.out.println("Created");
-                clearData();
-                if (response.body() != null)
-                    System.out.println(response.body().toString());
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                JSONObject message;
+                if (response.body() != null) {
+                    try {
+                        message = new JSONObject(response.body().string());
+                        String status = (String) message.get("operation");
+                        boolean sucessful = status.equals("sucessful");
+                        if (sucessful) {
+                            clearData();
+                            Toast.makeText(getContext(), "Restaurante agregado con exito!" , Toast.LENGTH_SHORT ).show();
+                        } else {
+                            Toast.makeText(getContext(), "Revise los datos" , Toast.LENGTH_SHORT ).show();
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                }
             }
 
             @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 System.out.println("There was an error");
                 System.out.println(t.getCause());
             }
         });
+    }
+
+    public void restaurantAdedd(){
+
     }
 
 

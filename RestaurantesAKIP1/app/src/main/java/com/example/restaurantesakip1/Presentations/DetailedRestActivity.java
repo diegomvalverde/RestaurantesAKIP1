@@ -64,32 +64,7 @@ public class DetailedRestActivity extends AppCompatActivity {
             }
         });
 
-        /*
 
-        RestaurantService service = RetrofitClient.getRetrofitInstance().create(RestaurantService.class);
-        Call<List<Restaurant>> call = service.getAllRestaurants("Bearer " + Session.getInstace().token);
-
-
-        call.enqueue(new Callback<List<Restaurant>>() {
-            @Override
-            public void onResponse(Call<List<Restaurant>> call, Response<List<Restaurant>> response) {
-                if (response.body() == null){
-                    System.out.println("Its a null");
-                } else {
-                    for (Restaurant restaurant : response.body()){
-                        if (restaurant._id.equals(restaurantId))
-                            setupComponents(restaurant);
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Restaurant>> call, Throwable t) {
-                System.out.println(t.getCause());
-            }
-        });*/
-
-        //Restaurant restaurant = RestaurantRepository.getInstace().localDB.get(restaurantId); //Esto debe de ser un query
 
     }
 
@@ -97,7 +72,7 @@ public class DetailedRestActivity extends AppCompatActivity {
         TextView txtName = findViewById(R.id.txt_restName);
         txtName.setText(restaurant.name);
         TextView txtScore = findViewById(R.id.txt_restScore);
-        txtScore.setText(Float.toString(restaurant.score));
+        txtScore.setText(Float.toString(restaurant.stars));
 
         pagesAdapter = new SectionsPageAdapter(getSupportFragmentManager());
 

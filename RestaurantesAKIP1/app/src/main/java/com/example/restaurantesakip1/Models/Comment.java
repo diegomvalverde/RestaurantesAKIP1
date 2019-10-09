@@ -1,18 +1,25 @@
 package com.example.restaurantesakip1.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Date;
 
 public class Comment {
+    @SerializedName("_id")
     public String _id;
+    @SerializedName("userId")
     public String userId;
+    @SerializedName("restaurantId")
     public String restaurantId;
-    public String date;
-    public String body;
 
-    public Comment(String id){
-        _id = id;
-        //date = new Date();
+    @SerializedName("date")
+    public String date;
+    @SerializedName("comment")
+    public String comment;
+
+    public Comment(){
+        date = "[Ingrese fecha aqui]";
         userId = "666";
-        body = "Dude, el mejor chifrijo de la vida";
+        comment = "Dude, el mejor chifrijo de la vida";
     }
 }

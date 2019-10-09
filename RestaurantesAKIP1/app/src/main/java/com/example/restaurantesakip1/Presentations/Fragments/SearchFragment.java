@@ -53,6 +53,7 @@ public class SearchFragment extends Fragment {
 
     public void showResults(List<Restaurant> restaurants){
         //List results
+        System.out.println(restaurants.size());
         this.restaurantsResults = restaurants;
         this.searchAdapter.clear();
         this.searchAdapter.addAll(restaurants);
@@ -74,7 +75,8 @@ public class SearchFragment extends Fragment {
         TextView name = myView.findViewById(R.id.txt_ResNameMarker);
         name.setText(restaurant.name);
         TextView score = myView.findViewById(R.id.txt_ResScoreMarker);
-        score.setText("0");
+        score.setText(Float.toString(restaurant.stars));
+
 
         Button seeMore = myView.findViewById(R.id.btn_seeMoreMarker);
         seeMore.setOnClickListener( (v) -> openDetailedInfo(restaurant) );
@@ -147,10 +149,11 @@ public class SearchFragment extends Fragment {
 
     public void performSearch(){
         RestaurantService service = RetrofitClient.getRetrofitInstance().create(RestaurantService.class);
-        Filter f = new Filter(new ArrayList<>());
-        //Call<List<Restaurant>> call = service.filterRestaurants("Bearer " + Session.getInstace().token, f);
+        Filter f = new Filter();
+        Call<List<Restaurant>> call = service.filterRestaurants("Bearer " + Session.getInstace().token, f);
 
-        Call<List<Restaurant>> call = service.getAllRestaurants("Bearer " + Session.getInstace().token);
+       // Call<List<Restaurant>> call = service.getAllRestaurants("Bearer " + Session.getInstace().token);
+        System.out.println("Helloooooooooooooooooo");
 
         call.enqueue(new Callback<List<Restaurant>>() {
             @Override
@@ -160,6 +163,8 @@ public class SearchFragment extends Fragment {
                     System.out.println(response.raw().toString());
                     System.out.println("Dude");
                 } else {
+                    System.out.println("Not null dude");
+                    System.out.println(response.raw().toString());
                     showResults(response.body());
                 }
             }

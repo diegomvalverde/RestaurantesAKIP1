@@ -1,14 +1,11 @@
 package com.example.restaurantesakip1.Presentations.Fragments;
 
 
-import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
-import android.view.SurfaceControl;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Space;
@@ -17,10 +14,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import com.example.restaurantesakip1.Models.Restaurant;
-import com.example.restaurantesakip1.Presentations.DetailedRestActivity;
 import com.example.restaurantesakip1.R;
-
-import org.w3c.dom.Text;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -38,7 +32,7 @@ public class InformationFragment extends Fragment {
 
     private void setupMap(View view){
         LocationFragment fragMap = (LocationFragment) getChildFragmentManager().findFragmentById(R.id.frag_mapLocation);
-        fragMap.setPointingAt(restaurantData.latLng);
+        fragMap.setPointingAt(restaurantData.getLatLng());
     }
 
     private void setupSchedule(View view){
@@ -90,7 +84,7 @@ public class InformationFragment extends Fragment {
         tRow.addView( new Space(this.getContext()) );
 
         TextView txtAddress = new TextView(this.getContext()); //view.findViewById(R.id.)
-        txtAddress.setText( Integer.toString(restaurantData.phoneNumber));
+        txtAddress.setText( restaurantData.contact);
 
         tRow.addView( txtAddress );
         tbContact.addView(tRow);

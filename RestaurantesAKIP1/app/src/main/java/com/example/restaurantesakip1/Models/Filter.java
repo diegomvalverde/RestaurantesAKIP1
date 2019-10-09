@@ -11,22 +11,15 @@ public class Filter {
     String name = "";
 
     @SerializedName("stars")
-    int stars = 5;
+    int stars = -1;
 
     @SerializedName("price")
-    String price = "barato";
+    String price = "";
 
-    @SerializedName("foodType")
-    String foodType = null;
+    @SerializedName("foodTypes")
+    String foodType = "";
 
     @SerializedName("distance")
-    List<Double> distance;
+    List<Double> distance  = new ArrayList<>();;
 
-    public Filter(List<Double> distance){
-        LatLng latLng = new LatLng(9.856290, -83.912560);
-        distance =  new ArrayList<>();
-        distance.add(latLng.longitude);
-        distance.add(latLng.latitude);
-        this.distance = distance;
-    }
 }

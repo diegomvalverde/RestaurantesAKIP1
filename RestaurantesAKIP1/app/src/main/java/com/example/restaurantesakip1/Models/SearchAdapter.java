@@ -29,9 +29,11 @@ public class SearchAdapter extends ArrayAdapter<Restaurant> {
         // Lookup view for data population
         TextView txtName = convertView.findViewById(R.id.txt_itemRestName);
         TextView txtScore = convertView.findViewById(R.id.txt_itemRestScore);
+        TextView txtFoodType = convertView.findViewById(R.id.txt_itemFoodType);
 
         txtName.setText(restaurant.name);
-        txtScore.setText(Float.toString(restaurant.getScore()));
+        txtScore.setText(Float.toString(restaurant.stars));
+        txtFoodType.setText(restaurant.foodTypes);
 
         // Populate the data into the template view using the data object
 

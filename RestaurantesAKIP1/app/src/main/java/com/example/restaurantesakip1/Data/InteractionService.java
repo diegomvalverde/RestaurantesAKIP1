@@ -18,10 +18,10 @@ import retrofit2.http.Part;
 
 public interface InteractionService {
     @POST("/comments")
-    Call<JSONObject> postComment(@Header("Authorization") String authHeader, @Body Comment body);
+    Call<ResponseBody> postComment(@Header("Authorization") String authHeader, @Body Comment body);
 
     @POST("/reviews")
-    Call<JSONObject> updateReview(@Header("Authorization") String authHeader, @Body Review body);
+    Call<ResponseBody> updateReview(@Header("Authorization") String authHeader, @Body Review body);
 
     @Multipart
     @POST("/upload")

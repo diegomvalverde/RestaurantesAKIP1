@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.example.restaurantesakip1.Data.RestaurantService;
 import com.example.restaurantesakip1.Data.RetrofitClient;
@@ -17,8 +18,10 @@ import com.example.restaurantesakip1.R;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -61,31 +64,36 @@ public class RegisterActivity extends AppCompatActivity {
 
         UserService service = RetrofitClient.getRetrofitInstance().create(UserService.class);
 
-        Call<JSONObject> call = service.saveUser(user);
+        Call<ResponseBody> call = service.saveUser(user);
 
-        call.enqueue(new Callback<JSONObject>() {
+        call.enqueue(new Callback<ResponseBody>() {
             @Override
-            public void onResponse(Call<JSONObject> call, Response<JSONObject> response) {
-                if (response.body() != null){
-                    String operation = "";
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+
+                JSONObject message;
+                if (response.body() != null) {
                     try {
-                        operation = (String) response.body().get("operation");
+                        message = new JSONObject(response.body().string());
+                        String status = (String) message.get("operation");
+                        boolean sucessful = status.equals("sucessful");
+                        if (sucessful) {
+                            clearData();
+                            Toast.makeText(getBaseContext(), "Restaurante agregado con exito!" , Toast.LENGTH_SHORT ).show();
+                        } else {
+                            Toast.makeText(getBaseContext(), "Revise los datos" , Toast.LENGTH_SHORT ).show();
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     } catch (JSONException e) {
                         e.printStackTrace();
-                        System.out.println(response.body().toString());
-                    }
-                    boolean result = operation.equals("sucessful");
-                    if (! result)
-                        System.out.println("Something went wrong");
-                    else {
-                        System.out.println("Uusario creado!");
                     }
 
                 }
             }
 
             @Override
-            public void onFailure(Call<JSONObject> call, Throwable t) {
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 System.out.println("On failure statment");
             }
         });
@@ -112,6 +120,11 @@ public class RegisterActivity extends AppCompatActivity {
 
 
         return true;
+    }
+
+
+    public void clearData(){
+
     }
 
 
