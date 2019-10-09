@@ -19,6 +19,9 @@ public class User {
     @SerializedName("email")
     public String email;
 
+    @SerializedName("password")
+    public String password;
+
     @SerializedName("token")
     public String token;
 

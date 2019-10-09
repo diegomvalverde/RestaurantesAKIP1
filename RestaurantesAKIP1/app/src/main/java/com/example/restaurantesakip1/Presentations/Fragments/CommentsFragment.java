@@ -17,6 +17,7 @@ import com.example.restaurantesakip1.Data.RestaurantRepository;
 import com.example.restaurantesakip1.Models.Comment;
 import com.example.restaurantesakip1.Models.CommentsAdapter;
 import com.example.restaurantesakip1.Models.Restaurant;
+import com.example.restaurantesakip1.Models.Review;
 import com.example.restaurantesakip1.Models.SearchAdapter;
 import com.example.restaurantesakip1.Models.Session;
 import com.example.restaurantesakip1.R;
@@ -39,6 +40,24 @@ public class CommentsFragment extends Fragment {
         // Required empty public constructor  :p
     }
 
+    public void loadUserOpinion(){
+        Review myReview = null;
+
+        for (Review currentReview : restaurantData.reviews){
+            if (currentReview.userId.equals(Session.getInstace().user._id)){
+                myReview = currentReview;
+                break;
+            }
+        }
+        if (myReview == null) return;
+
+        Spinner scoreSpin = myView.findViewById(R.id.spin_reviewScore);
+        Spinner precioSpin = myView.findViewById(R.id.spin_reviewPrices);
+
+        scoreSpin.setPrompt( Float.toString(myReview.score));
+        precioSpin.setPrompt(myReview.price);
+    }
+
     public CommentsFragment(Restaurant restaurant) {
         this.restaurantData = restaurant;
         // Required empty public constructor
@@ -49,6 +68,7 @@ public class CommentsFragment extends Fragment {
         EditText commentBox = myView.findViewById(R.id.tbox_comment);
         String body = commentBox.getText().toString();
         String user_id = Session.getInstace().user._id;
+        String rest_id = this.restaurantData._id;
 
     }
 
@@ -66,7 +86,7 @@ public class CommentsFragment extends Fragment {
         String precioStr = precioSpin.toString();
     }
 
-    private void setupComments(View myView){
+    private void setupComments(){
         this.lv_comments = myView.findViewById(R.id.lv_comments);
 
         if ( restaurantData.comments != null){
@@ -84,7 +104,8 @@ public class CommentsFragment extends Fragment {
         // Inflate the layout for this fragment
         View myView = inflater.inflate(R.layout.fragment_comments, container, false);
         this.myView = myView;
-        setupComments(myView);
+        setupComments();
+        loadUserOpinion();
         return myView;
     }
 

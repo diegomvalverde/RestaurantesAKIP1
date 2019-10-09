@@ -73,15 +73,15 @@ public class InformationFragment extends Fragment {
     private void setupFoodTypes(View view){
         TableLayout tbFoodTypes = view.findViewById(R.id.table_foodTypes);
 
-        for (String type : restaurantData.foodTypes){
+
+        //for (String type : restaurantData.foodTypes){
+        String type = restaurantData.foodTypes;
             TableRow tRow = new TableRow(this.getContext());
             tRow.addView( new Space(this.getContext()) );
             TextView txtAddress = new TextView(this.getContext()); //view.findViewById(R.id.)
             txtAddress.setText( type );
             tRow.addView( txtAddress );
             tbFoodTypes.addView(tRow);
-        }
-
     }
 
     private void setupContact(View view){

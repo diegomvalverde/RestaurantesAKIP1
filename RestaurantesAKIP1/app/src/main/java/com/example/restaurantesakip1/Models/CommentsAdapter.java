@@ -33,7 +33,7 @@ public class CommentsAdapter extends ArrayAdapter<Comment> {
 
 
         if (comment != null) {
-            txtUsername.setText( Integer.toString(comment.userId) );
+            txtUsername.setText( comment.userId );
             txtDate.setText(comment.date.toString());
             txtBody.setText(comment.body);
         } else {

@@ -35,7 +35,7 @@ public class Restaurant {
 
 
     @SerializedName("foodType")
-    public List<String> foodTypes;
+    public String foodTypes;
 
     @SerializedName("images")
     public List<String> imagesUrls = new ArrayList<>();
@@ -60,10 +60,7 @@ public class Restaurant {
         this.latLng = new LatLng(9.864244, -83.920438);
         this.address = "En su corazón";
         this.phoneNumber = 88687839;
-        this.foodTypes = new ArrayList<String>() {{
-            add("American");
-            add("Tiquician");
-        }};
+        this.foodTypes = "Tiquician";
         this.schedule = new HashMap<String, String>() {{
             put("Lunes", "6:00AM-11:00PM");
             put("Martes", "12:00AM - 11:50PM");

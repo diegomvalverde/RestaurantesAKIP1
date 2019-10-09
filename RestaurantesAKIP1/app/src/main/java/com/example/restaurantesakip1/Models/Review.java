@@ -4,8 +4,9 @@ import java.util.Date;
 
 public class Review {
     public String _id;
-    public int userId;
-    public int restaurantId;
-    public Date date;
+    public String userId;
+    public String restaurantId;
+    public String date;
     public float score;
+    public String price;
 }

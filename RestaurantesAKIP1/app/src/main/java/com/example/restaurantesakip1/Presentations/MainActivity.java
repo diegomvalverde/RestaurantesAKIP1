@@ -1,6 +1,7 @@
 package com.example.restaurantesakip1.Presentations;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -40,11 +41,14 @@ public class MainActivity extends AppCompatActivity {
 
     CallbackManager callbackManager;
     GoogleSignInClient mGoogleSignInClient;
+    ConstraintLayout blockLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        blockLayout = findViewById(R.id.block_layer);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
@@ -78,6 +82,11 @@ public class MainActivity extends AppCompatActivity {
                 });
     }
 
+    public void createUserWindow(View v){
+        Intent myIntent = new Intent(MainActivity.this, RegisterActivity.class);
+        MainActivity.this.startActivity(myIntent);
+    }
+
     public void applicationSigIn(View v){
         acceptSingIn();
     }
@@ -86,6 +95,8 @@ public class MainActivity extends AppCompatActivity {
     public void acceptSingIn(){
         String email = "diegomendez12@gmail.com";
         String pass = "123";
+        blockLayout.setVisibility(View.VISIBLE);
+
 
         UserService service = RetrofitClient.getRetrofitInstance().create(UserService.class);
         Call<User> call = service.getUser(email, pass);
@@ -97,6 +108,7 @@ public class MainActivity extends AppCompatActivity {
                 session.user = response.body();
                 session.token = response.body().token;
                 System.out.println("Done");
+                blockLayout.setVisibility(View.GONE);
 
                 Intent myIntent = new Intent(MainActivity.this, SearchActivity.class);
                 MainActivity.this.startActivity(myIntent);
@@ -106,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
             public void onFailure(Call<User> call, Throwable t) {
                 System.out.println("Something went wrong");
                 System.out.println(t.getCause());
+                blockLayout.setVisibility(View.GONE);
             }
 
         });

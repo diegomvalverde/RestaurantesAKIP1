@@ -21,6 +21,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.restaurantesakip1.Data.RestaurantRepository;
 import com.example.restaurantesakip1.Data.RestaurantService;
 import com.example.restaurantesakip1.Data.RetrofitClient;
+import com.example.restaurantesakip1.Models.Filter;
 import com.example.restaurantesakip1.Models.Restaurant;
 import com.example.restaurantesakip1.Models.SearchAdapter;
 import com.example.restaurantesakip1.Models.Session;
@@ -146,14 +147,18 @@ public class SearchFragment extends Fragment {
 
     public void performSearch(){
         RestaurantService service = RetrofitClient.getRetrofitInstance().create(RestaurantService.class);
-        Call<List<Restaurant>> call = service.getAllRestaurants("Bearer " + Session.getInstace().token);
+        Filter f = new Filter(new ArrayList<>());
+        //Call<List<Restaurant>> call = service.filterRestaurants("Bearer " + Session.getInstace().token, f);
 
+        Call<List<Restaurant>> call = service.getAllRestaurants("Bearer " + Session.getInstace().token);
 
         call.enqueue(new Callback<List<Restaurant>>() {
             @Override
             public void onResponse(Call<List<Restaurant>> call, Response<List<Restaurant>> response) {
                 if (response.body() == null){
                     System.out.println("Its a null");
+                    System.out.println(response.raw().toString());
+                    System.out.println("Dude");
                 } else {
                     showResults(response.body());
                 }
@@ -161,7 +166,9 @@ public class SearchFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<Restaurant>> call, Throwable t) {
+                System.out.println("Esto fallo");
                 System.out.println(t.getCause());
+                System.out.println();
             }
         });
     }
