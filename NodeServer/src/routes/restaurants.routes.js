@@ -299,7 +299,7 @@ router.post('/filter/', validateToken, async (req, res) => {
 
         var nombres = [];
         // Aplicar los filtros
-        if (name != null)
+        if (name != "")
         {
             for (var i = 0; i < restaurantsMongo.length; i++)
             {
@@ -335,7 +335,7 @@ router.post('/filter/', validateToken, async (req, res) => {
         }
 
         var foodTypes = [];
-        if (foodType != null)
+        if (foodType != -1)
         {
             for (var i = 0; i < starsArray.length; i++)
             {
@@ -353,7 +353,7 @@ router.post('/filter/', validateToken, async (req, res) => {
         }
 
         var distanceArray = [];
-        if (distance != null)
+        if (distance != [])
         {
             const from =
                 {
@@ -381,7 +381,7 @@ router.post('/filter/', validateToken, async (req, res) => {
         }
 
         var pricesArray = [];
-        if (price != null)
+        if (price != "")
         {
             for (var i = 0; i < distanceArray.length; i++)
             {

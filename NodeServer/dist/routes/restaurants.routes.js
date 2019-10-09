@@ -523,7 +523,7 @@ function () {
                       case 42:
                         nombres = []; // Aplicar los filtros
 
-                        if (name != null) {
+                        if (name != "") {
                           for (i = 0; i < restaurantsMongo.length; i++) {
                             // console.log(restaurantsMongo[i].name);
                             if (restaurantsMongo[i].name.toLowerCase().includes(name.toLowerCase())) {
@@ -551,7 +551,7 @@ function () {
 
                         foodTypes = [];
 
-                        if (foodType != null) {
+                        if (foodType != -1) {
                           for (i = 0; i < starsArray.length; i++) {
                             // console.log(restaurantsMongo[i].name);
                             if (starsArray[i].foodType.includes(foodType)) {
@@ -565,7 +565,7 @@ function () {
 
                         distanceArray = [];
 
-                        if (distance != null) {
+                        if (distance != []) {
                           from = {
                             lat: distance[1],
                             lon: distance[2]
@@ -588,7 +588,7 @@ function () {
 
                         pricesArray = [];
 
-                        if (price != null) {
+                        if (price != "") {
                           for (i = 0; i < distanceArray.length; i++) {
                             if (distanceArray[i].price == price) {
                               // restaurantsMongo.splice(i, 1);
