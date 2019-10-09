@@ -9,6 +9,8 @@ var _express = require("express");
 
 var _database = require("../database");
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
@@ -25,8 +27,7 @@ function () {
   var _ref = _asyncToGenerator(
   /*#__PURE__*/
   regeneratorRuntime.mark(function _callee(req, res) {
-    var db, review, exists, result, _result;
-
+    var db, comment, result;
     return regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
@@ -36,55 +37,23 @@ function () {
 
           case 2:
             db = _context.sent;
-            review = {
+            comment = _defineProperty({
               restaurantId: ObjectID(req.body.restaurantId),
               userId: ObjectID(req.body.userId),
               date: new Date().getDate(),
-              score: req.body.score,
-              price: req.body.price
-            };
+              comment: req.body.comment
+            }, "date", req.body.date);
             _context.next = 6;
-            return db.collection("reviews").findOne({
-              restaurantId: review.restaurantId,
-              userId: review.userId
-            });
+            return db.collection("comments").insertOne(comment);
 
           case 6:
-            exists = _context.sent;
-
-            if (!(exists != null)) {
-              _context.next = 14;
-              break;
-            }
-
-            _context.next = 10;
-            return db.collection("reviews").updateOne({
-              _id: exists._id
-            }, {
-              $set: review
-            });
-
-          case 10:
             result = _context.sent;
             res.json({
               "operation": "sucessful",
-              "description": "Review actualizada correctamente"
-            });
-            _context.next = 18;
-            break;
-
-          case 14:
-            _context.next = 16;
-            return db.collection("reviews").insertOne(review);
-
-          case 16:
-            _result = _context.sent;
-            res.json({
-              "operation": "sucessful",
-              "description": "Review agregada correctamente"
+              "description": "Comentario agregado correctamente"
             });
 
-          case 18:
+          case 8:
           case "end":
             return _context.stop();
         }

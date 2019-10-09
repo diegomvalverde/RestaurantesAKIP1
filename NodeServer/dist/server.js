@@ -20,6 +20,8 @@ var _images = _interopRequireDefault(require("./routes/images.routes"));
 
 var _login = _interopRequireDefault(require("./routes/login.routes"));
 
+var _comments = _interopRequireDefault(require("./routes/comments.routes"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var path = require('path');
@@ -56,5 +58,6 @@ app.use('/users', _users["default"]);
 app.use('/reviews', _reviews["default"]);
 app.use('/images', _images["default"]);
 app.use('/login', _login["default"]);
+app.use('/comments', _comments["default"]);
 var _default = app;
 exports["default"] = _default;

@@ -33,6 +33,7 @@ import UsersRoutes from './routes/users.routes';
 import ReviewsRoutes from './routes/reviews.routes';
 import ImagesRoutes from './routes/images.routes';
 import LoginRoutes from './routes/login.routes';
+import Comments from './routes/comments.routes';
 
 // Middlewares
 
@@ -44,6 +45,7 @@ app.use('/users', UsersRoutes);
 app.use('/reviews', ReviewsRoutes);
 app.use('/images', ImagesRoutes);
 app.use('/login', LoginRoutes);
+app.use('/comments', Comments);
 
 export default app;
 export {jwt};
